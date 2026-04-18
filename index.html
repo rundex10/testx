@@ -767,22 +767,12 @@ async function kirimTelegram(e) {
   if (!pesan) return;
 
   try {
-    const res = await fetch("https://venerable-beignet-d52d89.netlify.app/.netlify/functions/send", {
+    await fetch("URL_GOOGLE_SCRIPT_KAMU", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: pesan })
+      body: JSON.stringify({
+        message: pesan
+      })
     });
-
-    const data = await res.json();
-
-    console.log("RESP:", data); // 🔥 lihat ini di console
-
-    if (!data.ok) {
-      alert("Telegram gagal: " + (data.description || "unknown error"));
-      return;
-    }
 
     document.getElementById('formState').style.display = 'none';
     document.getElementById('successState').classList.add('show');
@@ -791,7 +781,6 @@ async function kirimTelegram(e) {
 
   } catch (err) {
     alert("Gagal kirim");
-    console.error(err);
   }
 }
 </script>
