@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dollar Flare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --surface2: #1c1c28;
+      --accent: #7c5cfc;
+      --accent2: #c084fc;
+      --glow: rgba(124, 92, 252, 0.35);
+      --text: #f0eeff;
+      --muted: #8b8aa0;
+      --border: rgba(124, 92, 252, 0.2);
+      --success: #4ade80;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* noise */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* orbs */
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orb-float 8s ease-in-out infinite; }
+    .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(124,92,252,0.25), transparent 70%); top: -120px; left: -120px; }
+    .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(192,132,252,0.18), transparent 70%); bottom: -100px; right: -100px; animation-delay: -3s; }
+    .orb-3 { width: 280px; height: 280px; background: radial-gradient(circle, rgba(99,179,237,0.1), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -6s; }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      33%  { transform: translate(20px,-20px) scale(1.05); }
+      66%  { transform: translate(-15px,15px) scale(0.97); }
+    }
+
+    /* navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,15,0.9), transparent);
+      pointer-events: none;
+    }
+
+    .logo {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 16px rgba(245,158,11,0.45), 0 0 40px rgba(245,158,11,0.15);
+      flex-shrink: 0;
+      animation: logo-pulse 3s ease infinite;
+    }
+
+    @keyframes logo-pulse {
+      0%, 100% { box-shadow: 0 0 16px rgba(245,158,11,0.45), 0 0 40px rgba(245,158,11,0.15); }
+      50%       { box-shadow: 0 0 24px rgba(245,158,11,0.7), 0 0 60px rgba(245,158,11,0.25); }
+    }
+
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .logo-text .dollar {
+      background: linear-gradient(135deg, #fbbf24, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-text .flare { color: var(--text); }
+
+    .logo-tagline {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .nav-cta {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 20px;
+      background: rgba(124,92,252,0.12);
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: rgba(124,92,252,0.22);
+      border-color: rgba(124,92,252,0.5);
+      color: var(--text);
+    }
+
+    .nav-cta svg { width: 14px; height: 14px; }
+
+    /* hero */
+    .hero {
+      text-align: center;
+      z-index: 1;
+      padding: 8rem 2rem 3rem;
+      max-width: 700px;
+      margin: 0 auto;
+      animation: fade-up 0.8s ease both;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,92,252,0.12);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 8px var(--accent2);
+      animation: pulse-dot 2s ease infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.6); }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #c084fc 0%, #7c5cfc 50%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 460px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .btn-start {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 40px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px var(--glow), 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .btn-start::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); }
+    .btn-start:hover   { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 50px var(--glow), 0 8px 30px rgba(0,0,0,0.5); }
+    .btn-start:active  { transform: scale(0.98); }
+    .btn-start svg     { width: 18px; height: 18px; transition: transform 0.2s; }
+    .btn-start:hover svg { transform: translateX(4px); }
+
+    .hero p { margin-bottom: 3rem; }
+
+    /* keunggulan */
+    .section-keunggulan {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+      animation: fade-up 0.9s 0.15s ease both;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-label span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    .keunggulan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .k-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s;
+      text-align: left;
+    }
+
+    .k-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(124,92,252,0.08), transparent 60%);
+      pointer-events: none;
+    }
+
+    .k-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(124,92,252,0.4);
+    }
+
+    .k-icon {
+      width: 38px; height: 38px;
+      background: rgba(124,92,252,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(124,92,252,0.2);
+    }
+
+    .k-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .k-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-weight: 300;
+      margin: 0;
+      max-width: none;
+    }
+
+    /* closing */
+    .section-closing {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+      animation: fade-up 1s 0.25s ease both;
+    }
+
+    .closing-card {
+      background: linear-gradient(135deg, rgba(124,92,252,0.12), rgba(192,132,252,0.06));
+      border: 1px solid rgba(124,92,252,0.25);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(192,132,252,0.6), transparent);
+    }
+
+    .closing-card::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(124,92,252,0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .closing-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+
+    .closing-card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .closing-card h2 .hl {
+      background: linear-gradient(135deg, #c084fc, #7c5cfc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .closing-card > p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      font-weight: 300;
+    }
+
+    /* modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,15,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal {
+  pointer-events: auto;
+}
+
+    .modal-overlay.show { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .modal-overlay.show .modal { transform: scale(1) translateY(0); }
+
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(192,132,252,0.8), transparent);
+      border-radius: 24px 24px 0 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      width: 34px; height: 34px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 18px;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+
+    .modal-close:hover { background: rgba(124,92,252,0.15); color: var(--text); border-color: rgba(124,92,252,0.4); }
+
+    .modal h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+      padding-right: 2rem;
+    }
+
+    .modal > p { color: var(--muted); font-size: 14px; margin-bottom: 1.75rem; }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(124,92,252,0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: none;
+      min-height: 130px;
+    }
+
+    .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.15); }
+    .form-group textarea::placeholder { color: var(--muted); }
+
+    .char-count { text-align: right; font-size: 12px; color: var(--muted); margin-top: 6px; transition: color 0.2s; }
+    .char-count.warn { color: #f59e0b; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px var(--glow);
+      margin-top: 0.75rem;
+    }
+
+    .btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 0 35px var(--glow); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* success */
+    .success-state { display: none; text-align: center; padding: 1rem 0; }
+    .success-state.show { display: block; }
+
+    .success-icon {
+      width: 70px; height: 70px;
+      background: rgba(74,222,128,0.12);
+      border: 2px solid rgba(74,222,128,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 30px;
+      animation: pop-in 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes pop-in {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .success-state h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .success-state p  { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid rgba(74,222,128,0.3);
+      border-radius: 100px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+      z-index: 200;
+      white-space: nowrap;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb { animation: none; }
+    }
+
+    @media (max-width: 540px) {
+      .keunggulan-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 4rem; }
+    }
+
+    @media (max-width: 480px) {
+      .modal { padding: 2rem 1.5rem; border-radius: 20px; }
+      .modal-overlay { align-items: flex-end; padding: 0; }
+      .modal { border-radius: 20px 20px 0 0; max-height: 85vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="logo" href="#">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-text">
+          <span class="dollar">Dollar</span><span class="flare"> Flare</span>
+        </div>
+        <div class="logo-tagline">Suaramu, Prioritas Kami</div>
+      </div>
+    </a>
+    <button class="nav-cta" onclick="openModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+      Kirim Pesan
+    </button>
+  </nav>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="badge">Sampaikan Aspirasimu</div>
+    <h1>Sampaikan<br><span class="gradient">Pesanmu</span><br>Kepada Kami</h1>
+    <p>Platform sederhana dan elegan untuk mengirimkan pesan, masukan, atau pertanyaanmu. Kami siap mendengarkan.</p>
+    <button class="btn-start" onclick="openModal()">
+      Kirim Pesan
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- KEUNGGULAN -->
+  <div class="section-keunggulan">
+    <div class="section-label">
+      <span>Keunggulan</span>
+    </div>
+    <div class="keunggulan-grid">
+      <div class="k-card">
+        <div class="k-icon">⚡</div>
+        <h3>Terkirim Seketika</h3>
+        <p>Pesanmu langsung tersimpan begitu kamu menekan tombol kirim. Tidak ada jeda, tidak ada penundaan.</p>
+      </div>
+      <div class="k-card">
+        <div class="k-icon">🔒</div>
+        <h3>Privasi Terjaga</h3>
+        <p>Pesanmu disimpan aman di server kami dan tidak pernah dibagikan kepada pihak mana pun.</p>
+      </div>
+      <div class="k-card">
+        <div class="k-icon">🎯</div>
+        <h3>Langsung ke Tujuan</h3>
+        <p>Tanpa registrasi, tanpa formulir panjang. Tulis pesan, kirim — semudah itu.</p>
+      </div>
+      <div class="k-card">
+        <div class="k-icon">💬</div>
+        <h3>Semua Suara Berarti</h3>
+        <p>Kritik, saran, atau sekadar sapaan — setiap pesan kami baca dan jadikan bahan evaluasi nyata.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="section-closing">
+    <div class="closing-card">
+      <div class="closing-eyebrow">Sudah siap?</div>
+      <h2>Suaramu adalah<br><span class="hl">perubahan nyata</span></h2>
+      <p>Setiap pesan yang masuk adalah bahan bakar bagi kami untuk terus tumbuh dan berkembang. Jangan tahan apa yang ingin kamu katakan — kami ada di sini, mendengarkan setiap kata dengan sepenuh hati.</p>
+      <button class="btn-start" onclick="openModal()">
+        Mulai Sekarang
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+  
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <div id="formState">
+
+  <form onsubmit="kirimTelegram(event)">
+
+  <div class="form-group">
+    <label>Pesan</label>
+    <textarea 
+      id="inputPesan"
+      maxlength="500"
+      oninput="updateChar()"
+      required>
+    </textarea>
+    <div class="char-count" id="charCount">0 / 500</div>
+  </div>
+
+  <button class="btn-submit" type="submit">
+    Kirim Pesan →
+  </button>
+
+</form>
+
+</div>
+
+      <div class="success-state" id="successState">
+        <div class="success-icon">✓</div>
+        <h3>Pesan Terkirim!</h3>
+        <p>Terima kasih telah menghubungi kami.<br>Pesanmu telah tersimpan dengan sukses.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    Pesan berhasil dikirim!
+  </div>
+
+  <script>
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('show');
+  document.getElementById('formState').style.display = 'block';
+  document.getElementById('successState').classList.remove('show');
+  document.getElementById('inputPesan').value = '';
+  document.getElementById('charCount').textContent = '0 / 500';
+  document.getElementById('charCount').classList.remove('warn');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function handleOverlayClick(e) {
+  if (e.target.id === 'modalOverlay') closeModal();
+}
+
+function updateChar() {
+  const len = document.getElementById('inputPesan').value.length;
+  const el = document.getElementById('charCount');
+  el.textContent = len + ' / 500';
+  el.classList.toggle('warn', len >= 400);
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+async function kirimTelegram(e) {
+  e.preventDefault();
+
+  const pesan = document.getElementById('inputPesan').value.trim();
+  if (!pesan) return;
+
+  try {
+    const res = await fetch("https://venerable-beignet-d52d89.netlify.app/.netlify/functions/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: pesan })
+    });
+
+    const data = await res.json();
+
+    console.log("RESP:", data); // 🔥 lihat ini di console
+
+    if (!data.ok) {
+      alert("Telegram gagal: " + (data.description || "unknown error"));
+      return;
+    }
+
+    document.getElementById('formState').style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+    showToast();
+    setTimeout(closeModal, 3000);
+
+  } catch (err) {
+    alert("Gagal kirim");
+    console.error(err);
+  }
+}
+</script>
+</body>
+</html>
