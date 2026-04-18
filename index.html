@@ -767,20 +767,33 @@ async function kirimTelegram(e) {
   if (!pesan) return;
 
   try {
-    await fetch(url, {
+    const res = await fetch("/.netlify/functions/send", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         message: pesan
       })
     });
 
+    const data = await res.json();
+
+    // 🔥 cek apakah benar sukses
+    if (!data.ok) {
+      alert("Gagal kirim");
+      return;
+    }
+
+    // ✅ sukses UI
     document.getElementById('formState').style.display = 'none';
     document.getElementById('successState').classList.add('show');
     showToast();
     setTimeout(closeModal, 3000);
 
   } catch (err) {
-    alert("Gagal kirim");
+    alert("Error koneksi");
+    console.error(err);
   }
 }
 </script>
