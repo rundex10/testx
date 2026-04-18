@@ -689,12 +689,9 @@
   <div class="form-group">
     <label>Pesan</label>
     <textarea 
-      id="inputPesan"
-      maxlength="500"
-      oninput="updateChar()"
-      required>
-    </textarea>
-    <div class="char-count" id="charCount">PK - SP12 - SP24</div>
+  id="inputPesan"
+  required>
+</textarea>
   </div>
 
   <button class="btn-submit" type="submit">
@@ -725,8 +722,6 @@ function openModal() {
   document.getElementById('formState').style.display = 'block';
   document.getElementById('successState').classList.remove('show');
   document.getElementById('inputPesan').value = '';
-  document.getElementById('charCount').textContent = '0 / 500';
-  document.getElementById('charCount').classList.remove('warn');
 }
 
 function closeModal() {
@@ -735,13 +730,6 @@ function closeModal() {
 
 function handleOverlayClick(e) {
   if (e.target.id === 'modalOverlay') closeModal();
-}
-
-function updateChar() {
-  const len = document.getElementById('inputPesan').value.length;
-  const el = document.getElementById('charCount');
-  el.textContent = len + ' / 10000';
-  el.classList.toggle('warn', len >= 400);
 }
 
 function showToast() {
