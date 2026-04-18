@@ -17,23 +17,18 @@
 
 :root {
   --bg: #ffffff;
-  --text: #111;
-  --muted: #666;
-  --border: #e5e7eb;
-  --accent: #111;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #2563eb;
 }
 
-/* BODY + GRID BACKGROUND */
+/* BODY */
 body {
   font-family: 'DM Sans', sans-serif;
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
-
-  background-image:
-    linear-gradient(#e5e7eb 1px, transparent 1px),
-    linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
-  background-size: 40px 40px;
+  line-height: 1.6;
 }
 
 /* NAVBAR */
@@ -52,7 +47,7 @@ body {
 .logo-text {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .logo-tagline {
@@ -61,47 +56,52 @@ body {
 }
 
 .nav-cta {
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  background: #fff;
+  padding: 10px 18px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 6px;
   font-weight: 500;
 }
 
 .nav-cta:hover {
-  background: #f9fafb;
+  opacity: 0.9;
 }
 
 /* HERO */
 .hero {
   text-align: center;
-  padding: 5rem 1.5rem 2rem;
-  max-width: 700px;
+  padding: 6rem 1.5rem 3rem;
+  max-width: 720px;
   margin: auto;
 }
 
 .hero h1 {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  margin-bottom: 1rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
 }
 
 .hero p {
+  font-size: 1.05rem;
   color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.6;
+  max-width: 500px;
+  margin: auto;
 }
 
 /* BUTTON */
 .btn-start {
   margin-top: 2rem;
-  padding: 12px 24px;
-  background: #111;
+  padding: 14px 28px;
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 .btn-start:hover {
@@ -110,59 +110,66 @@ body {
 
 /* SECTION */
 .section-criteria {
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
-  padding: 2rem 1.5rem;
+  padding: 3rem 1.5rem;
 }
 
 .section-label {
-  margin-bottom: 1rem;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
+  margin-bottom: 1.5rem;
 }
 
 /* GRID */
 .criteria-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 /* CARD */
 .k-card {
-  border: 1px solid var(--border);
-  padding: 1.2rem;
-  border-radius: 8px;
   background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: 0.2s;
+}
+
+.k-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 .k-card h3 {
-  font-size: 14px;
-  margin-bottom: 6px;
+  font-size: 16px;
+  margin-bottom: 8px;
 }
 
 .k-card p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
 /* CLOSING */
 .section-closing {
-  max-width: 700px;
+  max-width: 720px;
   margin: auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 3rem 1.5rem 5rem;
   text-align: center;
 }
 
 .closing-card {
+  background: #f8fafc;
   border: 1px solid var(--border);
-  padding: 2rem;
-  border-radius: 10px;
-  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
 }
 
 .closing-card h2 {
   font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
@@ -193,7 +200,7 @@ body {
 .modal {
   background: #fff;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 14px;
   width: 100%;
   max-width: 500px;
 }
@@ -202,20 +209,20 @@ body {
 .form-group textarea {
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px;
-  resize: none;
+  border-radius: 10px;
+  padding: 12px;
   font-family: inherit;
+  resize: none;
 }
 
 .btn-submit {
   width: 100%;
   margin-top: 1rem;
   padding: 12px;
-  background: #111;
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -225,10 +232,10 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #111;
+  background: #0f172a;
   color: #fff;
   padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 10px;
   opacity: 0;
 }
 
@@ -247,7 +254,7 @@ body {
   }
 
   .hero {
-    padding-top: 3rem;
+    padding-top: 4rem;
   }
 }
   </style>
