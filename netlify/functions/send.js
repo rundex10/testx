@@ -12,9 +12,9 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { message } = JSON.parse(event.body);
+    const url = process.env.GSHEET_URL;
 
-    await fetch("https://script.google.com/macros/s/AKfycby4TSBJ58EN6xMU23xkU3UwpD9ux0QczAUEZbvylubkuJFnmq9TDesPnX97FQUoLlPWog/exec", {
+    await fetch(url, {
       method: "POST",
       body: JSON.stringify({ message })
     });
