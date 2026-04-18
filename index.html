@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -30,7 +30,7 @@
       overflow-x: hidden;
     }
 
-    /* noise */
+  
     body::before {
       content: '';
       position: fixed;
@@ -41,7 +41,7 @@
       opacity: 0.6;
     }
 
-    /* orbs */
+    
     .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orb-float 8s ease-in-out infinite; }
     .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(124,92,252,0.25), transparent 70%); top: -120px; left: -120px; }
     .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(192,132,252,0.18), transparent 70%); bottom: -100px; right: -100px; animation-delay: -3s; }
@@ -53,7 +53,7 @@
       66%  { transform: translate(-15px,15px) scale(0.97); }
     }
 
-    /* navbar */
+    
     .navbar {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -149,7 +149,7 @@
 
     .nav-cta svg { width: 14px; height: 14px; }
 
-    /* hero */
+    
     .hero {
       text-align: center;
       z-index: 1;
@@ -247,8 +247,8 @@
 
     .hero p { margin-bottom: 3rem; }
 
-    /* keunggulan */
-    .section-keunggulan {
+    
+    .section-criteria {
       max-width: 700px;
       margin: 0 auto;
       padding: 0 2rem 3rem;
@@ -336,7 +336,7 @@
       max-width: none;
     }
 
-    /* closing */
+    
     .section-closing {
       max-width: 700px;
       margin: 0 auto;
@@ -405,7 +405,7 @@
       font-weight: 300;
     }
 
-    /* modal */
+    
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -536,7 +536,7 @@
     .btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 0 35px var(--glow); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* success */
+    
     .success-state { display: none; text-align: center; padding: 1rem 0; }
     .success-state.show { display: block; }
 
@@ -561,7 +561,7 @@
     .success-state h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
     .success-state p  { color: var(--muted); font-size: 14px; line-height: 1.6; }
 
-    /* toast */
+    
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -590,7 +590,7 @@
     }
 
     @media (max-width: 540px) {
-      .keunggulan-grid { grid-template-columns: 1fr; }
+      .criteria-grid { grid-template-columns: 1fr; }
       .hero { padding-top: 4rem; }
     }
 
@@ -603,7 +603,7 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+ 
   <nav class="navbar">
     <a class="logo" href="#">
       <div class="logo-icon">⚡</div>
@@ -624,7 +624,7 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
-  <!-- HERO -->
+ 
   <div class="hero">
     <div class="badge">Sampaikan Aspirasimu</div>
     <h1>Sampaikan<br><span class="gradient">Pesanmu</span><br>Kepada Kami</h1>
@@ -637,12 +637,12 @@
     </button>
   </div>
 
-  <!-- KEUNGGULAN -->
-  <div class="section-keunggulan">
+  
+  <div class="section-criteria">
     <div class="section-label">
       <span>Keunggulan</span>
     </div>
-    <div class="keunggulan-grid">
+    <div class="criteria-grid">
       <div class="k-card">
         <div class="k-icon">⚡</div>
         <h3>Terkirim Seketika</h3>
@@ -666,7 +666,7 @@
     </div>
   </div>
 
-  <!-- CLOSING -->
+ 
   <div class="section-closing">
     <div class="closing-card">
       <div class="closing-eyebrow">Sudah siap?</div>
@@ -681,7 +681,7 @@
     </div>
   </div>
 
-  <!-- MODAL -->
+ 
   <iframe name="hidden_iframe" style="display:none;"></iframe>
   
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -700,7 +700,7 @@
       oninput="updateChar()"
       required>
     </textarea>
-    <div class="char-count" id="charCount">0 / 500</div>
+    <div class="char-count" id="charCount">PK - SP12 - SP24</div>
   </div>
 
   <button class="btn-submit" type="submit">
@@ -719,7 +719,7 @@
     </div>
   </div>
 
-  <!-- TOAST -->
+ 
   <div class="toast" id="toast">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
     Pesan berhasil dikirim!
@@ -746,7 +746,7 @@ function handleOverlayClick(e) {
 function updateChar() {
   const len = document.getElementById('inputPesan').value.length;
   const el = document.getElementById('charCount');
-  el.textContent = len + ' / 500';
+  el.textContent = len + ' / 10000';
   el.classList.toggle('warn', len >= 400);
 }
 
@@ -779,20 +779,20 @@ async function kirimTelegram(e) {
 
     const data = await res.json();
 
-    // 🔥 cek apakah benar sukses
+   
     if (!data.ok) {
-      alert("Gagal kirim");
+      alert("Try again");
       return;
     }
 
-    // ✅ sukses UI
+    
     document.getElementById('formState').style.display = 'none';
     document.getElementById('successState').classList.add('show');
     showToast();
     setTimeout(closeModal, 3000);
 
   } catch (err) {
-    alert("Error koneksi");
+    alert("Error");
     console.error(err);
   }
 }
