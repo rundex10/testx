@@ -12,6 +12,8 @@ exports.handler = async (event) => {
   }
 
   try {
+    const { message } = JSON.parse(event.body); // 🔥 INI YANG KURANG
+
     const url = process.env.GSHEET_URL;
 
     await fetch(url, {
