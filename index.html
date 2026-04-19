@@ -144,6 +144,28 @@
 
     .section-closing { max-width: 700px; margin: 0 auto; padding: 0 2rem 6rem; }
     .closing-card { background: var(--surface); border: 1px solid rgba(124,92,252,0.2); border-radius: 32px; padding: 3.5rem 3rem; text-align: center; }
+    .closing-card {
+  position: relative;
+  overflow: hidden;
+}
+.closing-card::after {
+  content: '';
+  position: absolute;
+
+  /* posisi kanan bawah */
+  right: -60px;
+  bottom: -60px;
+
+  width: 320px;
+  height: 320px;
+
+  background: url('/logo.png') no-repeat center/contain;
+
+  opacity: 0.12; /* transparan */
+  filter: blur(6px); /* blur effect */
+
+  pointer-events: none;
+}
     .closing-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: block; }
     .closing-card h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.18; margin-bottom: 1.25rem; }
     .closing-card h2 .hl { background: linear-gradient(135deg, #d4b3ff, #7c5cfc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
