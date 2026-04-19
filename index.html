@@ -447,144 +447,109 @@
     }, 2000);
 
     // ── WALLET SCANNER ──
-    // API keys gratis dari masing-masing explorer (public demo keys)
-    // Untuk produksi: daftar gratis di etherscan.io, bscscan.com, basescan.org, arbiscan.io
-    const EXPLORER_KEYS = {
-      eth:  'YourEtherscanAPIKey',
-      bsc:  'YourBscscanAPIKey',
-      base: 'YourBasescanAPIKey',
-      arb:  'YourArbiscanAPIKey',
-    };
-
     const CHAINS = [
-      {
-        id: 'eth',
-        name: 'Ethereum',
-        api: 'https://api.etherscan.io/api',
-        key: EXPLORER_KEYS.eth,
-      },
-      {
-        id: 'bsc',
-        name: 'BSC',
-        api: 'https://api.bscscan.com/api',
-        key: EXPLORER_KEYS.bsc,
-      },
-      {
-        id: 'base',
-        name: 'Base',
-        api: 'https://api.basescan.org/api',
-        key: EXPLORER_KEYS.base,
-      },
-      {
-        id: 'arb',
-        name: 'Arbitrum',
-        api: 'https://api.arbiscan.io/api',
-        key: EXPLORER_KEYS.arb,
-      },
+      { id:'eth',  name:'Ethereum', api:'https://api.etherscan.io/api' },
+      { id:'bsc',  name:'BSC',      api:'https://api.bscscan.com/api' },
+      { id:'base', name:'Base',     api:'https://api.basescan.org/api' },
+      { id:'arb',  name:'Arbitrum', api:'https://api.arbiscan.io/api' },
     ];
 
-    async function getTxCount(chain, address) {
-      // Gunakan txlist dengan offset=1 untuk efisiensi — kita hanya butuh total count
-      const url = `${chain.api}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=100&sort=asc&apikey=${chain.key}`;
-      const res  = await fetch(url);
-      const json = await res.json();
-      if (json.status === '1') {
-        // result berisi array tx; untuk total yang akurat ambil lebih banyak
-        // Jika result length = 100 (offset), berarti mungkin ada lebih — lakukan second fetch
-        if (json.result.length >= 100) {
-          // fetch dengan offset besar untuk mendapat angka sesungguhnya
-          const url2 = `${chain.api}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10000&sort=asc&apikey=${chain.key}`;
-          const res2  = await fetch(url2);
-          const json2 = await res2.json();
-          return json2.status === '1' ? json2.result.length : json.result.length;
-        }
-        return json.result.length;
-      }
-      if (json.message === 'No transactions found') return 0;
-      throw new Error(json.message || 'API error');
-    }
-
-    function setChainResult(id, txCount, done) {
+    function setChainResult(id, txCount, status) {
       const txEl    = document.getElementById('tx-' + id);
       const badgeEl = document.getElementById('badge-' + id);
-      if (!done) {
-        txEl.textContent   = '—';
+      if (status === 'loading') {
+        txEl.textContent    = '—';
         badgeEl.textContent = 'Scanning...';
-        badgeEl.className  = 'chain-badge loading';
-        return;
-      }
-      txEl.textContent = txCount + ' txs';
-      if (txCount >= 10) {
-        badgeEl.textContent = '✓ Qualified';
-        badgeEl.className   = 'chain-badge ok';
-      } else {
-        badgeEl.textContent = '✗ Not enough';
+        badgeEl.className   = 'chain-badge loading';
+      } else if (status === 'error') {
+        txEl.textContent    = 'Error';
+        badgeEl.textContent = 'API Error';
         badgeEl.className   = 'chain-badge fail';
+      } else {
+        txEl.textContent    = txCount + ' txs';
+        badgeEl.textContent = txCount >= 10 ? '✓ Qualified' : '✗ Not enough';
+        badgeEl.className   = 'chain-badge ' + (txCount >= 10 ? 'ok' : 'fail');
       }
+    }
+
+    async function getTxCount(chain, address) {
+      // Gunakan txlistinternal + txlist, ambil jumlah real via getaddress
+      // Pakai txcount (nonce) untuk Ethereum-compatible chains — akurat & cepat
+      const url = `${chain.api}?module=proxy&action=eth_getTransactionCount&address=${address}&tag=latest`;
+      const res  = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      const json = await res.json();
+      // eth_getTransactionCount mengembalikan nonce = jumlah tx yang dikirim dari address ini
+      if (json.result && json.result !== '0x') {
+        return parseInt(json.result, 16);
+      }
+      if (json.result === '0x' || json.result === '0x0') return 0;
+      throw new Error(json.message || 'No result');
     }
 
     async function scanWallet() {
       const addr = document.getElementById('walletInput').value.trim();
       if (!addr) { alert('Please enter a wallet address.'); return; }
-      if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) { alert('Invalid wallet address format. Must start with 0x and be 42 characters.'); return; }
+      if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) {
+        alert('Invalid wallet address. Must start with 0x and be 42 characters.');
+        return;
+      }
 
       const btnScan = document.getElementById('btnScan');
-      btnScan.disabled = true;
+      btnScan.disabled    = true;
       btnScan.textContent = 'Scanning...';
 
-      // Reset UI
       document.getElementById('scanResult').classList.add('show');
       document.getElementById('verdictBox').style.display = 'none';
       document.getElementById('claimWrap').classList.remove('show');
-      CHAINS.forEach(c => setChainResult(c.id, 0, false));
+      CHAINS.forEach(c => setChainResult(c.id, 0, 'loading'));
 
       const results = {};
 
-      // Scan semua chain paralel
       await Promise.all(CHAINS.map(async (chain) => {
         try {
           const count = await getTxCount(chain, addr);
           results[chain.id] = count;
-          setChainResult(chain.id, count, true);
+          setChainResult(chain.id, count, 'done');
         } catch (err) {
-          console.warn(chain.name, err);
-          results[chain.id] = 0;
-          const badgeEl = document.getElementById('badge-' + chain.id);
-          const txEl    = document.getElementById('tx-' + chain.id);
-          txEl.textContent    = 'Error';
-          badgeEl.textContent = 'API Error';
-          badgeEl.className   = 'chain-badge fail';
+          console.warn(chain.name, err.message);
+          results[chain.id] = null;
+          setChainResult(chain.id, 0, 'error');
         }
       }));
 
-      // Verdict
-      const allQualified = CHAINS.every(c => (results[c.id] || 0) >= 10);
-      const verdictBox   = document.getElementById('verdictBox');
+      const chainNames = { eth:'Ethereum', bsc:'BSC', base:'Base', arb:'Arbitrum' };
+      const hasError   = Object.values(results).some(v => v === null);
+      const allOk      = CHAINS.every(c => results[c.id] !== null && results[c.id] >= 10);
+      const missing    = CHAINS.filter(c => results[c.id] === null || results[c.id] < 10).map(c => chainNames[c.id]);
+
+      const verdictBox = document.getElementById('verdictBox');
       verdictBox.style.display = 'block';
 
-      if (allQualified) {
+      if (allOk) {
         verdictBox.className = 'verdict-box eligible';
         verdictBox.innerHTML = `
           <div class="verdict-icon">🎉</div>
           <div class="verdict-title green">Eligible!</div>
-          <div class="verdict-desc">Your wallet meets all requirements across all 4 chains.<br>You can claim your $DFLR airdrop.</div>
-        `;
+          <div class="verdict-desc">Your wallet meets all requirements across all 4 chains.<br>You can claim your $DFLR airdrop.</div>`;
         document.getElementById('claimWrap').classList.add('show');
+      } else if (hasError) {
+        verdictBox.className = 'verdict-box not-eligible';
+        verdictBox.innerHTML = `
+          <div class="verdict-icon">⚠️</div>
+          <div class="verdict-title red">Scan Incomplete</div>
+          <div class="verdict-desc">Some chains failed to respond. Please wait a moment and try again.</div>`;
       } else {
         verdictBox.className = 'verdict-box not-eligible';
-        const missing = CHAINS.filter(c => (results[c.id] || 0) < 10).map(c => c.name).join(', ');
         verdictBox.innerHTML = `
           <div class="verdict-icon">❌</div>
           <div class="verdict-title red">Not Qualified</div>
-          <div class="verdict-desc">You need at least 10 transactions on: <strong style="color:#f87171">${missing}</strong>.<br>Complete more on-chain activity and try again.</div>
-        `;
+          <div class="verdict-desc">Need ≥10 txs on: <strong style="color:#f87171">${missing.join(', ')}</strong>.<br>Complete more on-chain activity and try again.</div>`;
       }
 
-      btnScan.disabled = false;
+      btnScan.disabled    = false;
       btnScan.textContent = '🔍 Scan';
     }
 
-    // Enter key trigger scan
     document.getElementById('walletInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') scanWallet();
     });
