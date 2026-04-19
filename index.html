@@ -148,21 +148,24 @@
   position: relative;
   overflow: hidden;
 }
+
 .closing-card::after {
   content: '';
   position: absolute;
 
-  /* posisi kanan bawah */
-  right: -60px;
-  bottom: -60px;
+  
+  right: -120px;
+  bottom: -120px;
 
-  width: 320px;
-  height: 320px;
+  width: 520px;
+  height: 520px;
 
   background: url('/dflr.png') no-repeat center/contain;
 
-  opacity: 0.12; /* transparan */
-  filter: blur(6px); /* blur effect */
+  opacity: 0.08; 
+  filter: none; 
+
+  transform: rotate(-15deg);
 
   pointer-events: none;
 }
