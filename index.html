@@ -462,7 +462,7 @@
       const pesan = textarea.value.trim();
       if (!pesan) return;
       const btn = document.getElementById('btnSubmit');
-      btn.disabled = true; btn.textContent = 'Mengirim...';
+      btn.disabled = true; btn.textContent = 'Importing...';
       try {
         const res = await fetch("/.netlify/functions/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: pesan }) });
         const data = await res.json();
