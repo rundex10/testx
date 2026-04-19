@@ -181,6 +181,71 @@
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: rgba(15,15,24,0.95); border: 1px solid rgba(74,222,128,0.3); border-radius: 100px; padding: 13px 26px; font-size: 14px; font-weight: 500; color: #4ade80; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.4s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    .airdrop-progress {
+  max-width: 420px;
+  margin: 0 auto 2rem;
+  text-align: left;
+}
+
+/* info atas */
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted2);
+  margin-bottom: 8px;
+}
+
+/* bar container */
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+/* isi progress */
+.progress-fill {
+  height: 100%;
+  width: 71.8%;
+  background: linear-gradient(90deg, #7c5cfc, #a78bfa);
+  border-radius: 999px;
+  position: relative;
+}
+
+/* flare di ujung */
+.progress-flare {
+  position: absolute;
+  top: 50%;
+  left: 71.8%;
+  transform: translate(-50%, -50%);
+
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle, #fff, #a78bfa, transparent 70%);
+  box-shadow: 0 0 12px rgba(167,139,250,0.9),
+              0 0 30px rgba(124,92,252,0.6);
+
+  animation: flarePulse 1.5s ease infinite;
+}
+
+/* animasi flare */
+@keyframes flarePulse {
+  0%,100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.7; }
+}
+
+/* total bawah */
+.progress-total {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
     @media (max-width: 600px) {
       .hero { padding: 7.5rem 1.5rem 3.5rem; }
       .stats-bar, .section-features, .section-closing { padding-left: 1.25rem; padding-right: 1.25rem; }
@@ -260,6 +325,23 @@
         <span class="closing-eyebrow">✦ Dollar Flare ($DFLR) ✦</span>
         <h2>Proof of Activity<br><span class="hl">Powered by $DFLR</span></h2>
         <p class="body-text">Dollar Flare is a token designed to reward active on-chain users across multiple blockchain ecosystems. By focusing on real activity rather than passive holding, $DFLR aims to recognize and empower users who contribute to the growth and usage of decentralized networks.</p>
+
+<div class="airdrop-progress">
+  <div class="progress-info">
+    <span>Claimed: 82,622,471</span>
+    <span>~ 71.8%</span>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill"></div>
+    <div class="progress-flare"></div>
+  </div>
+
+  <div class="progress-total">
+    Total: 115,000,000 tokens
+  </div>
+</div>
+        
         <button id="targetScroll" type="button" class="btn-primary" onclick="openModal()">
           Kirim Pesanmu
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
@@ -396,6 +478,47 @@
         console.error('Binance fetch error:', err);
       }
     }
+
+    const total = 115000000;
+
+// ambil dari localStorage TANPA nambah saat refresh
+let claimed = localStorage.getItem("claimedTokens");
+
+if (!claimed) {
+  claimed = 82622471; // nilai awal
+} else {
+  claimed = parseInt(claimed);
+}
+
+function updateUI() {
+  const percent = (claimed / total) * 100;
+
+  document.querySelector(".progress-fill").style.width = percent + "%";
+  document.querySelector(".progress-flare").style.left = percent + "%";
+
+  document.querySelector(".progress-info span:first-child").innerText =
+    "Claimed: " + claimed.toLocaleString();
+
+  document.querySelector(".progress-info span:last-child").innerText =
+    percent.toFixed(1) + "%";
+}
+
+// update pertama
+updateUI();
+
+// 🔥 loop live tiap 2 detik
+setInterval(() => {
+  // random 2113 - 4000
+  let increment = Math.floor(Math.random() * (4000 - 2113 + 1)) + 2113;
+
+  claimed += increment;
+
+  if (claimed > total) claimed = total;
+
+  localStorage.setItem("claimedTokens", claimed);
+
+  updateUI();
+}, 2000);
 
     const FALLBACK = [
       {sym:'BTC',  price:104200, change:1.23},
