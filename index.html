@@ -210,9 +210,35 @@
 .progress-fill {
   height: 100%;
   width: 71.8%;
-  background: linear-gradient(90deg, #7c5cfc, #a78bfa);
   border-radius: 999px;
   position: relative;
+
+  /* 🔥 gradient api */
+  background: linear-gradient(
+    90deg,
+    #ffb347 0%,
+    #ff8c00 30%,
+    #ff5e00 60%,
+    #ff2d00 100%
+  );
+
+  /* glow */
+  box-shadow:
+    0 0 8px rgba(255,140,0,0.8),
+    0 0 20px rgba(255,94,0,0.6),
+    0 0 35px rgba(255,45,0,0.4);
+
+  transition: width 0.6s ease;
+}
+
+    .progress-fill {
+  background-size: 200% 100%;
+  animation: fireMove 2s linear infinite;
+}
+
+@keyframes fireMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 /* flare di ujung */
