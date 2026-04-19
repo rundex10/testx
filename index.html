@@ -26,7 +26,7 @@
 
     .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(6,6,12,0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-icon { width: 38px; height: 38px; background: linear-gradient(145deg, #f5c518, #f97316); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .logo-icon { width: 38px; height: 38px; background: linear-gradient(145deg, #f5c518, #f97316); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
     .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.025em; line-height: 1.1; }
     .logo-text .dollar { background: linear-gradient(135deg, #fbbf24, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .logo-tagline { font-size: 9.5px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
@@ -42,7 +42,18 @@
     .hero h1 .line-accent { background: linear-gradient(135deg, #d4b3ff 0%, #8b6aff 45%, #6ab4ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .hero h1 .line-gold { background: linear-gradient(135deg, #f5d06a, #f0a832); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .hero-sub { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--muted2); max-width: 430px; margin: 0 auto 3rem; line-height: 1.75; font-weight: 300; }
-    .hero-cta-group { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .hero-cta-group { position: relative; width: 100%; overflow: hidden; margin-top: 1rem; background: transparent; }
+    .hero-cta-group::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(90deg, #06060c 40%, transparent); z-index: 2; pointer-events: none; }
+    .hero-cta-group::after  { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(270deg, #06060c 40%, transparent); z-index: 2; pointer-events: none; }
+    .ticker-track { display: flex; gap: 0; width: max-content; animation: ticker-slide 30s linear infinite; pointer-events: none; user-select: none; }
+    @keyframes ticker-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 10px 28px; white-space: nowrap;  }
+    .ticker-coin { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); }
+    .ticker-price { font-size: 13px; font-weight: 500; color: var(--muted2); }
+    .ticker-change { font-size: 12px; font-weight: 600; }
+    .ticker-change.up   { color: #4ade80; }
+    .ticker-change.down { color: #f87171; }
+    .ticker-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
     .btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 38px; background: var(--accent); color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; border: none; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 32px rgba(124,92,252,0.35); }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(124,92,252,0.5); background: #8b6dff; }
@@ -138,7 +149,7 @@
 
     <nav class="navbar">
       <a class="logo" href="#">
-        <div class="logo-icon"><img src="logo.png" alt="Dollar Flare" style="width:50px;height:50px;object-fit:contain;display:block;"></div>
+        <div class="logo-icon"><img src="logo.png" alt="Dollar Flare" style="width:26px;height:26px;object-fit:contain;display:block;"></div>
         <div>
           <div class="logo-text"><span class="dollar">Dollar</span><span style="color:var(--text)"> Flare</span></div>
           <div class="logo-tagline">Suaramu, Prioritas Kami</div>
@@ -155,11 +166,9 @@
       <h1>Suaramu<br><span class="line-accent">Didengar</span><br><span class="line-gold">Di Sini</span></h1>
       <p class="hero-sub">Platform sederhana dan elegan untuk mengirimkan pesan, masukan, atau pertanyaanmu. Kami siap mendengarkan setiap kata.</p>
       <div class="hero-cta-group">
-        <button type="button" class="btn-primary" onclick="openModal()">
-          Mulai Sekarang
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <button type="button" class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Pelajari Lebih Lanjut</button>
+        <div class="ticker-track" id="tickerTrack">
+          <!-- diisi JS -->
+        </div>
       </div>
     </section>
 
@@ -245,7 +254,6 @@
     function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
     function showToast() { const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3200); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-    
     async function kirimTelegram(e) {
       e.preventDefault();
       const pesan = textarea.value.trim();
@@ -261,6 +269,77 @@
         showToast(); setTimeout(closeModal, 3000);
       } catch (err) { btn.disabled = false; btn.textContent = 'Kirim Pesan →'; alert("Error: Gagal mengirim pesan."); console.error(err); }
     }
+    // CRYPTO TICKER — Binance REST API (tanpa API key, tanpa limit)
+    const PAIRS = [
+      {sym:'BTC',  pair:'BTCUSDT'},
+      {sym:'ETH',  pair:'ETHUSDT'},
+      {sym:'BNB',  pair:'BNBUSDT'},
+      {sym:'SOL',  pair:'SOLUSDT'},
+      {sym:'XRP',  pair:'XRPUSDT'},
+      {sym:'DOGE', pair:'DOGEUSDT'},
+      {sym:'ADA',  pair:'ADAUSDT'},
+      {sym:'TON',  pair:'TONUSDT'},
+      {sym:'SHIB', pair:'SHIBUSDT'},
+      {sym:'DOT',  pair:'DOTUSDT'},
+    ];
+
+    function fmtPrice(p) {
+      if (p >= 1000)   return '$' + p.toLocaleString('en-US', {maximumFractionDigits:0});
+      if (p >= 1)      return '$' + p.toFixed(2);
+      if (p >= 0.0001) return '$' + p.toFixed(5);
+      return '$' + p.toFixed(8);
+    }
+
+    function renderTicker(data) {
+      const track = document.getElementById('tickerTrack');
+      if (!track) return;
+      const items = [...data, ...data].map(({sym, price, change}) => {
+        const up = change >= 0;
+        return `<div class="ticker-item">
+          <div class="ticker-dot" style="background:${up?'#4ade80':'#f87171'}"></div>
+          <span class="ticker-coin">${sym}</span>
+          <span class="ticker-price">${fmtPrice(price)}</span>
+          <span class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</span>
+        </div>`;
+      }).join('');
+      track.innerHTML = items;
+    }
+
+    async function fetchPrices() {
+      try {
+        const symbols = JSON.stringify(PAIRS.map(p => p.pair));
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(symbols)}`);
+        const json = await res.json();
+        const data = json.map(d => {
+          const meta = PAIRS.find(p => p.pair === d.symbol);
+          return {
+            sym:    meta.sym,
+            price:  parseFloat(d.lastPrice),
+            change: parseFloat(d.priceChangePercent),
+          };
+        });
+        renderTicker(data);
+      } catch(err) {
+        console.error('Binance fetch error:', err);
+      }
+    }
+
+    const FALLBACK = [
+      {sym:'BTC',  price:104200, change:1.23},
+      {sym:'ETH',  price:2510,   change:-0.85},
+      {sym:'BNB',  price:598,    change:0.42},
+      {sym:'SOL',  price:172,    change:2.11},
+      {sym:'XRP',  price:2.18,   change:-1.34},
+      {sym:'DOGE', price:0.1821, change:3.05},
+      {sym:'ADA',  price:0.72,   change:-0.67},
+      {sym:'TON',  price:3.12,   change:1.88},
+      {sym:'SHIB', price:0.00001421, change:4.21},
+      {sym:'DOT',  price:4.21,   change:-0.29},
+    ];
+    renderTicker(FALLBACK);
+    fetchPrices();
+    setInterval(fetchPrices, 2000);
+
   </script>
 </body>
 </html>
