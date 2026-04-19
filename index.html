@@ -215,7 +215,7 @@
           <div class="logo-tagline">Fueling the Future of On-Chain Activity</div>
         </div>
       </a>
-      <button type="button" class="nav-pill" onclick="openModal()">
+      <button type="button" class="nav-pill" onclick="Scroll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
         Kirim Pesan
       </button>
@@ -260,7 +260,7 @@
         <span class="closing-eyebrow">✦ Dollar Flare ($DFLR) ✦</span>
         <h2>Proof of Activity<br><span class="hl">Powered by $DFLR</span></h2>
         <p class="body-text">Dollar Flare is a token designed to reward active on-chain users across multiple blockchain ecosystems. By focusing on real activity rather than passive holding, $DFLR aims to recognize and empower users who contribute to the growth and usage of decentralized networks.</p>
-        <button type="button" class="btn-primary" onclick="openModal()">
+        <button id="targetScroll" type="button" class="btn-primary" onclick="openModal()">
           Kirim Pesanmu
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
         </button>
@@ -298,6 +298,17 @@
   </div>
 
   <script>
+    function Scroll() {
+  const target = document.getElementById("targetScroll");
+
+  const yOffset = -100;
+  const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+  window.scrollTo({
+    top: y,
+    behavior: "smooth"
+  });
+}
     const textarea = document.getElementById('inputPesan');
     const charCount = document.getElementById('charCount');
     textarea.addEventListener('input', () => {
