@@ -313,6 +313,12 @@
   </div>
 
   <script>
+
+    // STOP RC //
+    document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+    
     // ── SCROLL ──
     function Scroll() {
       const target = document.getElementById('targetScroll');
