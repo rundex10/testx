@@ -47,33 +47,41 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  overflow: hidden;
   height: 30px;
-  max-width: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1000px;
+  max-width: 60vw;
+  overflow: hidden;
 }
 
+/* TEXT STYLE */
 .claim-item {
-  font-size: 12px;
-  color: var(--muted2);
+  position: absolute;
+  font-size: 12.5px;
   white-space: nowrap;
+
+  background: linear-gradient(90deg, #ff8c00, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
   opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  filter: blur(6px);
-  transition: all 0.6s ease;
+  transform: translateX(-120%) scale(0.95);
+  filter: blur(8px);
+
+  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.claim-item.show {
+.claim-item.enter {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateX(0) scale(1);
   filter: blur(0);
 }
 
 .claim-item.exit {
   opacity: 0;
-  transform: translateX(-40px);
+  transform: translateX(-120%) scale(0.95);
   filter: blur(6px);
 }
     
@@ -353,26 +361,7 @@
 
   <script>
 
-    function randomWallet() {
-  const chars = "abcdef0123456789";
-  let start = "0x";
-  let end = "";
-
-  for (let i = 0; i < 6; i++) {
-    start += chars[Math.floor(Math.random() * chars.length)];
-  }
-  for (let i = 0; i < 6; i++) {
-    end += chars[Math.floor(Math.random() * chars.length)];
-  }
-
-  return `${start}...${end}`;
-}
-
-function randomAmount() {
-  return Math.floor(Math.random() * (9362 - 2966 + 1)) + 2966;
-}
-
-function createClaim() {
+    function createClaim() {
   const feed = document.getElementById("claimFeed");
 
   const el = document.createElement("div");
@@ -381,18 +370,21 @@ function createClaim() {
 
   feed.appendChild(el);
 
-  setTimeout(() => el.classList.add("show"), 50);
+  el.style.transform = "translateX(-120%) scale(0.95)";
+
+  requestAnimationFrame(() => {
+    el.classList.add("enter");
+  });
 
   setTimeout(() => {
+    el.classList.remove("enter");
     el.classList.add("exit");
-  }, 1000);
+  }, 1400);
 
   setTimeout(() => {
     el.remove();
-  }, 2000);
+  }, 2400);
 }
-
-setInterval(createClaim, 1000);
 
     // ── SCROLL ──
     function Scroll() {
