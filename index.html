@@ -361,31 +361,24 @@
 
   <script>
 
-    function createClaim() {
-  const feed = document.getElementById("claimFeed");
+    function randomWallet() {
+  const chars = "abcdef0123456789";
+  let start = "0x";
+  let end = "";
 
-  const el = document.createElement("div");
-  el.className = "claim-item";
-  el.innerText = `${randomWallet()} claimed ${randomAmount()} $DFLR`;
+  for (let i = 0; i < 6; i++) {
+    start += chars[Math.floor(Math.random() * chars.length)];
+  }
+  for (let i = 0; i < 6; i++) {
+    end += chars[Math.floor(Math.random() * chars.length)];
+  }
 
-  feed.appendChild(el);
-
-  el.style.transform = "translateX(-120%) scale(0.95)";
-
-  requestAnimationFrame(() => {
-    el.classList.add("enter");
-  });
-
-  setTimeout(() => {
-    el.classList.remove("enter");
-    el.classList.add("exit");
-  }, 1400);
-
-  setTimeout(() => {
-    el.remove();
-  }, 2400);
+  return `${start}...${end}`;
 }
 
+function randomAmount() {
+  return Math.floor(Math.random() * (9362 - 2966 + 1)) + 2966;
+}
     // ── SCROLL ──
     function Scroll() {
       const target = document.getElementById('targetScroll');
