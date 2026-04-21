@@ -52,7 +52,7 @@
   align-items: center;
   overflow: hidden;
   height: 30px;
-  max-width: 400px;
+  max-width: 1000px;
 }
 
 .claim-item {
@@ -381,21 +381,17 @@ function createClaim() {
 
   feed.appendChild(el);
 
-  // trigger masuk animasi
   setTimeout(() => el.classList.add("show"), 50);
 
-  // geser kiri setelah 1 detik
   setTimeout(() => {
     el.classList.add("exit");
   }, 1000);
 
-  // hapus element lama
   setTimeout(() => {
     el.remove();
   }, 2000);
 }
 
-// loop tiap 1 detik
 setInterval(createClaim, 1000);
 
     // ── SCROLL ──
