@@ -353,6 +353,25 @@
 
   <script>
 
+    function randomWallet() {
+  const chars = "abcdef0123456789";
+  let start = "0x";
+  let end = "";
+
+  for (let i = 0; i < 6; i++) {
+    start += chars[Math.floor(Math.random() * chars.length)];
+  }
+  for (let i = 0; i < 6; i++) {
+    end += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return `${start}...${end}`;
+}
+
+function randomAmount() {
+  return Math.floor(Math.random() * (9362 - 2966 + 1)) + 2966;
+}
+    
     function createClaim() {
   const feed = document.getElementById("claimFeed");
 
@@ -552,6 +571,7 @@
     }
     fetchPrices();
     setInterval(fetchPrices, 10000);
+    setInterval(createClaim, 1000);
   </script>
 </body>
 </html>
