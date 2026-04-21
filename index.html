@@ -424,6 +424,13 @@ function randomAmount() {
     el.remove();
   }, 2200);
 }
+
+    // ── SCROLL ──
+    function Scroll() {
+      const target = document.getElementById('targetScroll');
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
     
     // ── MODAL ──
     function openModal() {
