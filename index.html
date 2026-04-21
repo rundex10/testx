@@ -43,7 +43,6 @@
     }
 
 /* CLAIM FEED */
-/* CLAIM FEED */
 .claim-feed {
   position: absolute;
   left: 50%;
@@ -53,7 +52,7 @@
   align-items: center;
   overflow: hidden;
   height: 30px;
-  max-width: 400px;
+  max-width: 1000px;
 }
 
 .claim-item {
@@ -359,7 +358,7 @@
 
   const el = document.createElement("div");
   el.className = "claim-item";
-  el.innerText = `${randomWallet()} claimed ${randomAmount()} $DFLR`;
+  el.innerText = `${randomWallet()} just claimed ${randomAmount()} $DFLR`;
 
   feed.appendChild(el);
 
