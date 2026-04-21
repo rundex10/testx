@@ -196,12 +196,12 @@
 
     .success-state { display: none; text-align: center; padding: 1.5rem 0; }
     .success-state.show { display: block; }
-    .success-icon { width: 76px; height: 76px; background: rgba(74,222,128,0.1); border: 1.5px solid rgba(74,222,128,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.75rem; font-size: 32px; animation: pop-in 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+    .success-icon { width: 76px; height: 76px; background: rgba(255, 0, 0, 0.5); border: 1.5px solid rgba(74,222,128,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.75rem; font-size: 32px; animation: pop-in 0.5s cubic-bezier(0.22,1,0.36,1) both; }
     @keyframes pop-in { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .success-state h3 { font-family: 'Syne', sans-serif; font-size: 1.55rem; font-weight: 800; margin-bottom: 0.6rem; }
     .success-state p { color: red; font-size: 14.5px; line-height: 1.65; }
 
-    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: red; border: 1px solid rgba(74,222,128,0.3); border-radius: 100px; padding: 13px 26px; font-size: 14px; font-weight: 500; color: #4ade80; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.4s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: rgba(255, 0, 0, 0.5); border: 1px solid red; border-radius: 100px; padding: 13px 26px; font-size: 14px; font-weight: 500; color: #4ade80; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.4s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     .airdrop-progress {
