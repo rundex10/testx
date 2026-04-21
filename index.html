@@ -43,45 +43,38 @@
     }
 
 /* CLAIM FEED */
+/* CLAIM FEED */
 .claim-feed {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  height: 30px;
   display: flex;
+  gap: 12px;
   align-items: center;
-  justify-content: center;
-  width: 1000px;
-  max-width: 60vw;
   overflow: hidden;
+  height: 30px;
+  max-width: 400px;
 }
 
-/* TEXT STYLE */
 .claim-item {
-  position: absolute;
-  font-size: 12.5px;
+  font-size: 12px;
+  color: var(--muted2);
   white-space: nowrap;
-
-  background: linear-gradient(90deg, #ff8c00, #fbbf24);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
   opacity: 0;
-  transform: translateX(-120%) scale(0.95);
-  filter: blur(8px);
-
-  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(20px) scale(0.95);
+  filter: blur(6px);
+  transition: all 0.6s ease;
 }
 
-.claim-item.enter {
+.claim-item.show {
   opacity: 1;
-  transform: translateX(0) scale(1);
+  transform: translateY(0) scale(1);
   filter: blur(0);
 }
 
 .claim-item.exit {
   opacity: 0;
-  transform: translateX(-120%) scale(0.95);
+  transform: translateX(-40px);
   filter: blur(6px);
 }
     
