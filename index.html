@@ -361,30 +361,37 @@
 
   <script>
 
-    function randomWallet() {
-  const chars = "abcdef0123456789";
-  let start = "0x";
-  let end = "";
+    function createClaim() {
+  const feed = document.getElementById("claimFeed");
 
-  for (let i = 0; i < 6; i++) {
-    start += chars[Math.floor(Math.random() * chars.length)];
-  }
-  for (let i = 0; i < 6; i++) {
-    end += chars[Math.floor(Math.random() * chars.length)];
-  }
+  const el = document.createElement("div");
+  el.className = "claim-item";
+  el.innerText = `${randomWallet()} claimed ${randomAmount()} $DFLR`;
 
-  return `${start}...${end}`;
+  feed.appendChild(el);
+
+  // posisi awal tengah
+  el.style.left = "50%";
+  el.style.transform = "translate(-50%, 20px) scale(0.95)";
+
+  // masuk (fade + naik)
+  setTimeout(() => {
+    el.classList.add("show");
+    el.style.transform = "translate(-50%, 0)";
+  }, 50);
+
+  // geser kiri setelah 1 detik
+  setTimeout(() => {
+    el.style.transform = "translate(-120%, 0)";
+    el.style.opacity = "0";
+    el.style.filter = "blur(6px)";
+  }, 1200);
+
+  // hapus
+  setTimeout(() => {
+    el.remove();
+  }, 2200);
 }
-
-function randomAmount() {
-  return Math.floor(Math.random() * (9362 - 2966 + 1)) + 2966;
-}
-    // ── SCROLL ──
-    function Scroll() {
-      const target = document.getElementById('targetScroll');
-      const y = target.getBoundingClientRect().top + window.pageYOffset - 100;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
     
     // ── MODAL ──
     function openModal() {
