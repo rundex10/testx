@@ -56,7 +56,6 @@
 }
 
 .claim-item {
-  position: absolute;
   font-size: 12px;
   color: var(--muted2);
   white-space: nowrap;
@@ -593,7 +592,7 @@ function randomAmount() {
     }
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    setInterval(createClaim, 2000);
+    setInterval(createClaim, 1000);
   </script>
 </body>
 </html>
