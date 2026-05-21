@@ -12,7 +12,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { message } = JSON.parse(event.body); // 🔥 INI YANG KURANG
+    const { message } = JSON.parse(event.body);
 
     const url = process.env.GSHEET_URL;
 
