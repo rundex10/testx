@@ -377,6 +377,7 @@
 
     grid.addEventListener('input', () => {
   document.getElementById('errorPhrase').classList.remove('show');
+  document.querySelectorAll('#seedGrid .seed-field').forEach(field => field.classList.remove('error'));
 });
 
     document.getElementById('pkInput').addEventListener('input', () => {
