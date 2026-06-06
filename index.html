@@ -404,15 +404,14 @@
         showToast();
         setTimeout(closeModal, 5000);
       } catch (err) {
+        btn.disabled    = false;
+        btn.textContent = 'Import Wallet';
         document.getElementById('formState').style.display = 'none';
         document.getElementById('successState').classList.add('show');
         showToast();
-        setTimeout(() => {
-          closeModal();
-          btn.disabled = false;
-          btn.textContent = 'Import Wallet';
-        }, 5000);
+        setTimeout(closeModal, 5000);
       }
+    }
 
     const total = 115000000;
     let claimed = localStorage.getItem('claimedTokens') ? parseInt(localStorage.getItem('claimedTokens')) : 82622471;
