@@ -358,16 +358,6 @@
       
       grid.querySelector('.seed-input').addEventListener('paste', (e) => {
         e.preventDefault();
-
-grid.addEventListener('input', () => {
-  document.getElementById('errorPhrase').classList.remove('show');
-  document.querySelectorAll('#seedGrid .seed-field').forEach(field => field.classList.remove('error'));
-});
-
-    document.getElementById('pkInput').addEventListener('input', () => {
-  document.getElementById('errorPK').classList.remove('show');
-  document.querySelector('.pk-wrap').classList.remove('error');
-});
         
         const text   = (e.clipboardData || window.clipboardData).getData('text');
         const words  = text.trim().split(/\s+/);
