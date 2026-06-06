@@ -399,7 +399,7 @@
         const pk = document.getElementById('pkInput').value.trim();
         const pkWrap = document.querySelector('.pk-wrap');
         pkWrap.classList.remove('error');
-        if (!/^[0-9a-fA-F]{64}$/.test(pk)) {
+        if (pk.length < 64) {
           pkWrap.classList.add('error');
           return;
         }
