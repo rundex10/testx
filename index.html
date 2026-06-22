@@ -259,6 +259,39 @@
   var candleSpanMs = 6000;
   var maxCandles = 80;
 
+  function saveChart(){
+  localStorage.setItem('dflr_chart_data', JSON.stringify({
+    candles: candles,
+    curCandle: curCandle,
+    price: price,
+    savedAt: Date.now()
+  }));
+}
+
+function loadChart(){
+  try{
+    var saved = localStorage.getItem('dflr_chart_data');
+    if(!saved) return false;
+
+    var data = JSON.parse(saved);
+
+    if(data.savedAt && (Date.now() - data.savedAt > 7*24*60*60*1000)){
+      localStorage.removeItem('dflr_chart_data');
+      return false;
+    }
+
+    candles = data.candles || [];
+    curCandle = data.curCandle || null;
+    price = data.price || basePrice;
+
+    return candles.length > 0;
+
+  }catch(e){
+    console.error(e);
+    return false;
+  }
+}
+
   function seedHistory(){
     var hist = [];
     var p = basePrice + (Math.random()-0.5)*0.0015;
@@ -281,8 +314,11 @@
     return hist;
   }
 
+  if(!loadChart()){
   candles = seedHistory();
   price = candles[candles.length-1].c;
+  saveChart();
+}
 
   function tick(){
     var noise = (Math.random()-0.5) * 0.00006;
@@ -292,10 +328,25 @@
 
     var now = Date.now();
     if(!curCandle || now - curCandle.t0 >= candleSpanMs){
-      if(curCandle) candles.push(curCandle);
-      curCandle = { t0: now, o: price, h: price, l: price, c: price };
-      if(candles.length > maxCandles) candles.shift();
+
+  if(curCandle){
+    candles.push(curCandle);
+
+    if(candles.length > maxCandles){
+      candles.shift();
     }
+
+    saveChart();
+  }
+
+  curCandle = {
+    t0: now,
+    o: price,
+    h: price,
+    l: price,
+    c: price
+  };
+}
     curCandle.c = price;
     curCandle.h = Math.max(curCandle.h, price);
     curCandle.l = Math.min(curCandle.l, price);
@@ -319,6 +370,7 @@
       document.getElementById('dflr-tmax').textContent = new Date(now).toLocaleTimeString();
     }
 
+    saveChart();
     draw();
   }
 
