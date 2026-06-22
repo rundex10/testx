@@ -256,7 +256,7 @@
 
   var candles = [];
   var curCandle = null;
-  var candleSpanMs = 6000;
+  var candleSpanMs = 30000;
   var maxCandles = 80;
 
   function saveChart(){
@@ -321,7 +321,7 @@ function loadChart(){
 }
 
   function tick(){
-    var noise = (Math.random()-0.5) * 0.00006;
+    var noise = (Math.random()-0.5) * 0.000005;
     price = price + noise;
     if(price < MIN_P) price = MIN_P + Math.random()*0.0003;
     if(price > MAX_P) price = MAX_P - Math.random()*0.0003;
@@ -453,7 +453,7 @@ function loadChart(){
   window.addEventListener('orientationchange', function(){ setTimeout(resize, 200); });
 
   resize();
-  setInterval(tick, 1200);
+  setInterval(tick, 5000);
 })();
 </script>
     </section>
