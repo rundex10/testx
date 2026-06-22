@@ -212,6 +212,198 @@
       <div class="hero-cta-group">
         <div class="ticker-track" id="tickerTrack"></div>
       </div>
+      <div class="dflr-chart-wrap" style="max-width:900px;margin:0 auto;padding:12px;box-sizing:border-box;">
+  <div class="dflr-chart-card" style="background:#0e1117;border-radius:12px;border:1px solid #1c212b;padding:14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="color:#8a93a3;font-size:12px;letter-spacing:0.5px;">DFLR / USDC</div>
+        <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+          <span id="dflr-price" style="color:#ffffff;font-size:clamp(18px,5vw,24px);font-weight:600;">0.020000</span>
+          <span id="dflr-pct" style="font-size:13px;font-weight:600;color:#26a69a;">+0.00%</span>
+        </div>
+      </div>
+      <div style="text-align:right;color:#8a93a3;font-size:11px;line-height:1.5;">
+        <div>High <span id="dflr-high" style="color:#cfd3da;">0.020000</span></div>
+        <div>Low <span id="dflr-low" style="color:#cfd3da;">0.020000</span></div>
+      </div>
+    </div>
+    <div style="position:relative;width:100%;height:260px;" id="dflr-chart-container">
+      <canvas id="dflr-cv" style="width:100%;height:100%;display:block;touch-action:none;"></canvas>
+    </div>
+    <div style="display:flex;justify-content:space-between;color:#5b6472;font-size:10px;margin-top:6px;">
+      <span id="dflr-tmin">--:--:--</span>
+      <span id="dflr-tmax">--:--:--</span>
+    </div>
+  </div>
+  <div style="color:#4a5161;font-size:10px;text-align:center;margin-top:10px;">Simulasi harga, bukan data pasar nyata</div>
+</div>
+
+<style>
+  @media (min-width: 600px) {
+    #dflr-chart-container { height: 340px !important; }
+  }
+</style>
+
+<script>
+(function(){
+  var canvas = document.getElementById('dflr-cv');
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+
+  var MIN_P = 0.017, MAX_P = 0.028;
+  var basePrice = 0.020;
+  var price = basePrice;
+
+  var candles = [];
+  var curCandle = null;
+  var candleSpanMs = 6000;
+  var maxCandles = 80;
+
+  function seedHistory(){
+    var hist = [];
+    var p = basePrice + (Math.random()-0.5)*0.0015;
+    var nPoints = 56;
+    var msPerPoint = (7*24*60*60*1000) / nPoints;
+    var now = Date.now() - 7*24*60*60*1000;
+    for(var i=0;i<nPoints;i++){
+      var o = p;
+      var steps = 4, hh = o, ll = o;
+      for(var s=0;s<steps;s++){
+        p += (Math.random()-0.49) * 0.00045;
+        if(p < MIN_P) p = MIN_P + Math.random()*0.0005;
+        if(p > MAX_P) p = MAX_P - Math.random()*0.0005;
+        hh = Math.max(hh,p); ll = Math.min(ll,p);
+      }
+      var c = p;
+      hist.push({ t0: now, o:o, h:Math.max(hh,o,c), l:Math.min(ll,o,c), c:c });
+      now += msPerPoint;
+    }
+    return hist;
+  }
+
+  candles = seedHistory();
+  price = candles[candles.length-1].c;
+
+  function tick(){
+    var noise = (Math.random()-0.5) * 0.00006;
+    price = price + noise;
+    if(price < MIN_P) price = MIN_P + Math.random()*0.0003;
+    if(price > MAX_P) price = MAX_P - Math.random()*0.0003;
+
+    var now = Date.now();
+    if(!curCandle || now - curCandle.t0 >= candleSpanMs){
+      if(curCandle) candles.push(curCandle);
+      curCandle = { t0: now, o: price, h: price, l: price, c: price };
+      if(candles.length > maxCandles) candles.shift();
+    }
+    curCandle.c = price;
+    curCandle.h = Math.max(curCandle.h, price);
+    curCandle.l = Math.min(curCandle.l, price);
+
+    document.getElementById('dflr-price').textContent = price.toFixed(6);
+    var pct = ((price-basePrice)/basePrice*100);
+    var pctEl = document.getElementById('dflr-pct');
+    pctEl.textContent = (pct>=0?'+':'')+pct.toFixed(2)+'%';
+    pctEl.style.color = pct>=0 ? '#26a69a' : '#ef5350';
+
+    var allCandles = candles.concat(curCandle?[curCandle]:[]);
+    var visible = allCandles.slice(-60);
+    var highs = visible.map(function(c){return c.h;});
+    var lows = visible.map(function(c){return c.l;});
+    if(highs.length){
+      document.getElementById('dflr-high').textContent = Math.max.apply(null,highs).toFixed(6);
+      document.getElementById('dflr-low').textContent = Math.min.apply(null,lows).toFixed(6);
+    }
+    if(visible.length){
+      document.getElementById('dflr-tmin').textContent = new Date(visible[0].t0).toLocaleTimeString();
+      document.getElementById('dflr-tmax').textContent = new Date(now).toLocaleTimeString();
+    }
+
+    draw();
+  }
+
+  function draw(){
+    var rect = canvas.getBoundingClientRect();
+    var W = rect.width, H = rect.height;
+    if(W === 0 || H === 0) return;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = '#0e1117';
+    ctx.fillRect(0,0,W,H);
+
+    var allCandles = candles.concat(curCandle?[curCandle]:[]);
+    var visible = allCandles.slice(-60);
+    if(visible.length < 2) return;
+
+    var isSmall = W < 500;
+    var padL = 6, padR = isSmall ? 48 : 60, padT = 14, padB = 6;
+    var plotW = W - padL - padR;
+    var plotH = H - padT - padB;
+
+    var highs = visible.map(function(c){return c.h;});
+    var lows = visible.map(function(c){return c.l;});
+    var maxP = Math.max.apply(null, highs);
+    var minP = Math.min.apply(null, lows);
+    var range = (maxP - minP) || 0.0005;
+    maxP += range*0.12;
+    minP -= range*0.12;
+    range = maxP - minP;
+
+    function y(p){ return padT + (1 - (p - minP)/range) * plotH; }
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    var gridLines = isSmall ? 3 : 4;
+    for(var i=0;i<=gridLines;i++){
+      var gy = padT + plotH*i/gridLines;
+      ctx.beginPath(); ctx.moveTo(padL,gy); ctx.lineTo(padL+plotW,gy); ctx.stroke();
+      var gp = maxP - range*i/gridLines;
+      ctx.fillStyle = '#5b6472';
+      ctx.font = (isSmall ? '9px' : '11px') + ' -apple-system, sans-serif';
+      ctx.fillText(gp.toFixed(6), padL+plotW+5, gy+3);
+    }
+
+    var n = visible.length;
+    var slot = plotW / n;
+    var bodyW = Math.max(1.5, slot*0.6);
+
+    visible.forEach(function(c, idx){
+      var cx = padL + slot*idx + slot/2;
+      var up = c.c >= c.o;
+      var col = up ? '#26a69a' : '#ef5350';
+      ctx.strokeStyle = col;
+      ctx.fillStyle = col;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, y(c.h));
+      ctx.lineTo(cx, y(c.l));
+      ctx.stroke();
+      var yo = y(c.o), yc = y(c.c);
+      var top = Math.min(yo,yc), h = Math.max(1, Math.abs(yc-yo));
+      ctx.fillRect(cx - bodyW/2, top, bodyW, h);
+    });
+
+    var lastY = y(visible[visible.length-1].c);
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(padL,lastY); ctx.lineTo(padL+plotW,lastY); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function resize(){
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    draw();
+  }
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', function(){ setTimeout(resize, 200); });
+
+  resize();
+  setInterval(tick, 1200);
+})();
+</script>
     </section>
 
     <div class="stats-bar">
