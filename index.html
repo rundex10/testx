@@ -580,9 +580,31 @@ function openModal() {
 }
     
     
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
-    function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    function closeModal() {
+  // Tutup modal
+  document.getElementById('modalOverlay').classList.remove('show');
+
+  // Hentikan proses verification yang sedang berjalan
+  verificationRun++;
+
+  // Reset tombol
+  const btnPhrase = document.getElementById('btnSubmitPhrase');
+  const btnPK = document.getElementById('btnSubmitPK');
+
+  if (btnPhrase) {
+    btnPhrase.disabled = false;
+    btnPhrase.textContent = 'Import Wallet';
+  }
+
+  if (btnPK) {
+    btnPK.disabled = false;
+    btnPK.textContent = 'Import Wallet';
+  }
+
+  // Kembalikan tampilan ke form untuk pembukaan berikutnya
+  document.getElementById('formState').style.display = 'block';
+  document.getElementById('successState').classList.remove('show');
+}
 
     function switchTab(tab) {
       document.getElementById('tabPhrase').classList.toggle('active', tab === 'phrase');
