@@ -166,7 +166,6 @@
   display: block;
 }
 
-/* Verification icon */
 .verify-icon {
   width: 68px;
   height: 68px;
@@ -185,16 +184,27 @@
   border: 3px solid #cde8d8;
   border-top-color: #0b7a3e;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: verification-spin .75s linear infinite;
 }
 
-@keyframes spin {
+@keyframes verification-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Title */
+.verify-icon.result {
+  background: #fde8e8;
+  border-color: #c0392b;
+}
+
+.result-x {
+  color: #c0392b;
+  font-family: 'Space Mono', monospace;
+  font-size: 32px;
+  font-weight: 800;
+}
+
 .success-state h3 {
   font-family: 'Space Mono', monospace;
   font-size: 1.2rem;
@@ -203,7 +213,6 @@
   color: #0b7a3e;
 }
 
-/* Verification rows */
 .verification-list {
   width: 100%;
   max-width: 390px;
@@ -227,26 +236,24 @@
   color: #8a9990;
 }
 
-/* Circle loading */
 .check-icon {
   width: 17px;
   height: 17px;
   border: 2px solid #b9c9bf;
   border-radius: 50%;
   flex-shrink: 0;
-  position: relative;
 }
 
 .verify-item.checking .check-icon {
   border-color: #0b7a3e;
   border-top-color: transparent;
-  animation: spin 0.7s linear infinite;
+  animation: verification-spin .7s linear infinite;
 }
 
-/* Verified */
 .verify-item.verified .check-icon {
   background: #16b955;
   border-color: #16b955;
+  position: relative;
 }
 
 .verify-item.verified .check-icon::after {
@@ -263,10 +270,10 @@
   color: #16a34a;
 }
 
-/* Failed */
 .verify-item.failed .check-icon {
   background: #df2b1f;
   border-color: #df2b1f;
+  position: relative;
 }
 
 .verify-item.failed .check-icon::after {
@@ -283,13 +290,16 @@
   color: #d52b20;
 }
 
+.verify-item.pending {
+  opacity: .65;
+}
+
 .success-state p {
   color: var(--muted2);
   font-size: 13px;
   line-height: 1.6;
-  margin-top: 8px;
 }
-
+    
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: #fff; border: 2px solid #c0392b; border-radius: 4px; padding: 12px 24px; font-size: 13px; font-weight: 700; color: #c0392b; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.35s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; font-family: 'Space Mono', monospace; box-shadow: 3px 3px 0 #c0392b; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -459,9 +469,15 @@
 
   <script>
     
-let verificationTimers = [];
+let verificationRun = 0;
 
-function showVerificationDemo() {
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function showVerificationDemo() {
+  const run = ++verificationRun;
+
   const state = document.getElementById('successState');
   const icon = document.getElementById('verifyIcon');
   const title = document.getElementById('verifyTitle');
@@ -470,67 +486,71 @@ function showVerificationDemo() {
   const walletAge = document.getElementById('walletAgeCheck');
   const swap = document.getElementById('swapCheck');
 
-  // Bersihkan animasi sebelumnya
-  verificationTimers.forEach(clearTimeout);
-  verificationTimers = [];
+  if (!state || !icon || !title || !message || !walletAge || !swap) {
+    console.error('Verification popup element tidak ditemukan.');
+    return;
+  }
 
-  // Reset popup
+  // Tampilkan popup
   state.classList.add('show');
 
+  // Reset icon
+  icon.className = 'verify-icon';
   icon.innerHTML = '<div class="loader"></div>';
-  icon.style.cssText = `
-    width:68px;
-    height:68px;
-    background:#f4faf6;
-    border:2px solid #0b7a3e;
-    border-radius:4px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 1.5rem;
-    color:#0b7a3e;
-  `;
 
   title.textContent = 'Verifying Wallet';
   title.style.color = '#0b7a3e';
 
   message.textContent =
-    'Please wait while the requirements are being checked...';
+    'Please wait while we verify your wallet...';
 
+  // Reset checks
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
 
   swap.className = 'verify-item pending';
   swap.querySelector('.status-text').textContent = 'Waiting...';
 
-  // Step 1
-  verificationTimers.push(setTimeout(() => {
-    walletAge.className = 'verify-item verified';
-    walletAge.querySelector('.status-text').textContent = 'Verified';
+  // =========================
+  // STEP 1 — WALLET AGE
+  // =========================
+  await wait(1800);
 
-    swap.className = 'verify-item checking';
-    swap.querySelector('.status-text').textContent = 'Checking...';
-  }, 1800));
+  // Kalau popup sudah dimulai ulang, hentikan proses lama
+  if (run !== verificationRun) return;
 
-  // Step 2
-  verificationTimers.push(setTimeout(() => {
-    swap.className = 'verify-item failed';
-    swap.querySelector('.status-text').textContent = 'Not Verified';
-  }, 3600));
+  walletAge.className = 'verify-item verified';
+  walletAge.querySelector('.status-text').textContent = 'Verified';
 
-  // Final state
-  verificationTimers.push(setTimeout(() => {
-    icon.innerHTML = '<span class="result-x">×</span>';
+  // Mulai step 2
+  swap.className = 'verify-item checking';
+  swap.querySelector('.status-text').textContent = 'Checking...';
 
-    icon.style.background = '#fde8e8';
-    icon.style.borderColor = '#c0392b';
+  // =========================
+  // STEP 2 — SWAP ACTIVITY
+  // =========================
+  await wait(1800);
 
-    title.textContent = 'Not Eligible';
-    title.style.color = '#c0392b';
+  if (run !== verificationRun) return;
 
-    message.textContent =
-      'The required wallet activity could not be verified.';
-  }, 4200));
+  swap.className = 'verify-item failed';
+  swap.querySelector('.status-text').textContent = 'Not Verified';
+
+  // =========================
+  // FINAL RESULT
+  // =========================
+  await wait(700);
+
+  if (run !== verificationRun) return;
+
+  icon.className = 'verify-icon result';
+  icon.innerHTML = '<span class="result-x">×</span>';
+
+  title.textContent = 'Not Eligible';
+  title.style.color = '#c0392b';
+
+  message.textContent =
+    'The required wallet activity could not be verified.';
 }
     
     function Scroll() {
@@ -637,8 +657,8 @@ function openModal() {
         });
         const data = await res.json();
         if (!data.ok) throw new Error('failed');
-        document.getElementById('formState').style.display = 'none';
-        document.getElementById('successState').classList.add('show');
+document.getElementById('formState').style.display = 'none';
+showVerificationDemo();
         
       } catch (err) {
         btn.disabled    = false;
