@@ -48,8 +48,79 @@
     .logo-text { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; line-height: 1.1; }
     .logo-text .dollar { color: #8b6a00; }
     .logo-tagline { font-size: 9px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; font-family: 'Space Mono', monospace; }
-    .nav-pill { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: var(--accent); border: 2px solid #1a4a1a; color: #ffffff; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: all 0.15s; letter-spacing: 0.05em; }
-    .nav-pill:hover { background: #1a4a1a; border-color: #0a2a0a; }
+    .nav-pill {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+
+  background: var(--accent);
+  border: 2px solid #1a4a1a;
+  color: #ffffff;
+
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+
+  transition: all 0.15s;
+  letter-spacing: 0.05em;
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nav-pill::after {
+  content: '';
+  position: absolute;
+  top: -80%;
+  left: -100%;
+  width: 45%;
+  height: 260%;
+
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255,255,255,0.15) 43%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(255,255,255,0.15) 57%,
+    transparent 65%,
+    transparent 100%
+  );
+
+  transform: skewX(-20deg);
+  animation: mintGlassShine 2.8s ease-in-out infinite;
+
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes mintGlassShine {
+  0% {
+    left: -100%;
+  }
+
+  45% {
+    left: 140%;
+  }
+
+  100% {
+    left: 140%;
+  }
+}
+
+.nav-pill:hover {
+  background: #1a4a1a;
+  border-color: #0a2a0a;
+}
+
+.nav-pill:active {
+  transform: translate(1px, 1px);
+}
 
     .hero { text-align: center; padding: 9rem 2rem 3rem; max-width: 700px; margin: 0 auto; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--border); border-radius: 4px; padding: 6px 16px; font-size: 10.5px; font-weight: 600; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2rem; font-family: 'Space Mono', monospace; }
