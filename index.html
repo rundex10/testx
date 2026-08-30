@@ -589,9 +589,25 @@
       .seed-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 400px) {
-      .modal-overlay { align-items: flex-end; padding: 0; }
-      .modal { border-radius: 4px 4px 0 0; max-height: 90vh; }
-    }
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: none;
+    max-height: 90vh;
+    border-radius: 12px 12px 0 0;
+
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .modal-overlay.show .modal {
+    transform: translateY(0);
+  }
+}
 
     #cometCanvas {
   position: fixed;
