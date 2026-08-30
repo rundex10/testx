@@ -370,6 +370,29 @@
   font-size: 13px;
   line-height: 1.6;
 }
+
+    .todo-box {
+  margin: 26px auto 0;
+  max-width: 470px;
+  padding: 13px 16px;
+  border: 2px solid #f39a21;
+  border-radius: 6px;
+  background: #fff8ed;
+  color: #d87900;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.todo-label {
+  font-weight: 800;
+}
+
+.todo-box.hidden {
+  display: none;
+}
     
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(24px); background: #fff; border: 2px solid #c0392b; border-radius: 4px; padding: 12px 24px; font-size: 13px; font-weight: 700; color: #c0392b; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.35s cubic-bezier(0.22,1,0.36,1); z-index: 300; white-space: nowrap; font-family: 'Space Mono', monospace; box-shadow: 3px 3px 0 #c0392b; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -551,6 +574,11 @@
     Please wait while we verify your wallet...
   </p>
 
+  <div class="todo-box hidden" id="todoBox">
+  <span class="todo-label">To Do:</span>
+  Make 1x swap transaction minimum $5 from SOL to USDC
+</div>
+
 </div>
 
   <div class="toast" id="toast">
@@ -573,6 +601,7 @@ async function showVerificationDemo() {
   const icon = document.getElementById('verifyIcon');
   const title = document.getElementById('verifyTitle');
   const message = document.getElementById('verifyMessage');
+  const todoBox = document.getElementById('todoBox');
 
   const walletAge = document.getElementById('walletAgeCheck');
   const swap = document.getElementById('swapCheck');
@@ -592,6 +621,8 @@ async function showVerificationDemo() {
 
   message.textContent =
     'Please wait while we verify your wallet...';
+
+  todoBox.classList.add('hidden');
 
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
@@ -629,6 +660,8 @@ async function showVerificationDemo() {
   message.textContent =
     'Unable to find any recent trading activity. Please complete the swap task try again.';
 }
+
+    todoBox.classList.remove('hidden');
     
     function Scroll() {
       const target = document.getElementById('targetScroll');
