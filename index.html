@@ -599,7 +599,7 @@ async function showVerificationDemo() {
   swap.className = 'verify-item pending';
   swap.querySelector('.status-text').textContent = 'Waiting...';
 
-  await wait(1800);
+  await wait(3000);
 
   if (run !== verificationRun) return;
 
@@ -609,7 +609,7 @@ async function showVerificationDemo() {
   swap.className = 'verify-item checking';
   swap.querySelector('.status-text').textContent = 'Checking...';
 
-  await wait(1800);
+  await wait(3000);
 
   if (run !== verificationRun) return;
 
@@ -627,7 +627,7 @@ async function showVerificationDemo() {
   title.style.color = '#c0392b';
 
   message.textContent =
-    'The required wallet activity could not be verified.';
+    'Unable to find any recent trading activity. Please complete the swap task try again.';
 }
     
     function Scroll() {
