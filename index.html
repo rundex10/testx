@@ -782,20 +782,22 @@ function updateUI() {
 
   document.querySelector(
     '.progress-info span:first-child'
-  ).innerText = 'Claimed: ' + claimed.toLocaleString();
+  ).innerText =
+    'Claimed: ' + claimed.toLocaleString();
 
   document.querySelector(
     '.progress-info span:last-child'
-  ).innerText = pct.toFixed(1) + '%';
+  ).innerText =
+    pct.toFixed(1) + '%';
 }
 
 updateUI();
 
 setInterval(() => {
-  claimed -= 16000;
+  claimed += 16000;
 
-  if (claimed < 0) {
-    claimed = 0;
+  if (claimed >= total) {
+    claimed = total;
   }
 
   updateUI();
