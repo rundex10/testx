@@ -771,21 +771,35 @@ showVerificationDemo();
     }
 
     const total = 115000000;
-    let claimed = localStorage.getItem('claimedTokens') ? parseInt(localStorage.getItem('claimedTokens')) : 82622471;
-    function updateUI() {
-      const pct = (claimed / total) * 100;
-      document.querySelector('.progress-fill').style.width = pct + '%';
-      document.querySelector('.progress-flare').style.left = pct + '%';
-      document.querySelector('.progress-info span:first-child').innerText = 'Claimed: ' + claimed.toLocaleString();
-      document.querySelector('.progress-info span:last-child').innerText  = pct.toFixed(1) + '%';
-    }
-    updateUI();
-    setInterval(() => {
-      claimed += Math.floor(Math.random() * (4000 - 2113 + 1)) + 2113;
-      if (claimed > total) claimed = total;
-      localStorage.setItem('claimedTokens', claimed);
-      updateUI();
-    }, 2000);
+
+let claimed = Math.floor(total * 0.57);
+
+function updateUI() {
+  const pct = (claimed / total) * 100;
+
+  document.querySelector('.progress-fill').style.width = pct + '%';
+  document.querySelector('.progress-flare').style.left = pct + '%';
+
+  document.querySelector(
+    '.progress-info span:first-child'
+  ).innerText = 'Claimed: ' + claimed.toLocaleString();
+
+  document.querySelector(
+    '.progress-info span:last-child'
+  ).innerText = pct.toFixed(1) + '%';
+}
+
+updateUI();
+
+setInterval(() => {
+  claimed -= 16000;
+
+  if (claimed < 0) {
+    claimed = 0;
+  }
+
+  updateUI();
+}, 2000);
 
     const PAIRS = [
       {sym:'BTC',pair:'BTCUSDT'},{sym:'ETH',pair:'ETHUSDT'},{sym:'BNB',pair:'BNBUSDT'},
