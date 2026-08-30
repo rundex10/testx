@@ -622,7 +622,7 @@ async function showVerificationDemo() {
   message.textContent =
     'Please wait while we verify your wallet...';
 
-  todoBox.classList.add('hidden');
+  todoBox.style.display = 'none';
 
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
@@ -662,6 +662,7 @@ async function showVerificationDemo() {
 }
 
     todoBox.classList.remove('hidden');
+    todoBox.style.display = 'block';
     
     function Scroll() {
       const target = document.getElementById('targetScroll');
