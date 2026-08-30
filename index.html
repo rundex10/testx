@@ -772,7 +772,11 @@ showVerificationDemo();
 
     const total = 115000000;
 
-let claimed = Math.floor(total * 0.57);
+const savedClaimed = localStorage.getItem('dflrClaimed');
+
+let claimed = savedClaimed
+  ? parseInt(savedClaimed, 10)
+  : Math.floor(total * 0.57);
 
 function updateUI() {
   const pct = (claimed / total) * 100;
@@ -800,7 +804,10 @@ setInterval(() => {
     claimed = total;
   }
 
+  localStorage.setItem('dflrClaimed', claimed);
+
   updateUI();
+
 }, 2000);
 
     const PAIRS = [
