@@ -669,13 +669,13 @@
   display: none !important;
 }
 
-    .demo-field.error {
+    .form-error.error {
   border-color: #c0392b;
   background: #fde8e8;
   animation: shake 0.4s ease;
 }
 
-.demo-error {
+.form-error {
   display: none;
   color: #c0392b;
   font-family: 'Space Mono', monospace;
@@ -684,7 +684,7 @@
   margin-bottom: 10px;
 }
 
-.demo-error.show {
+.form-error.show {
   display: block;
 }
     
@@ -855,8 +855,8 @@
     function validateDemoForm(e) {
   e.preventDefault();
 
-  const fields = document.querySelectorAll('.demo-field');
-  const error = document.getElementById('demoError');
+  const fields = document.querySelectorAll('.form-field');
+  const error = document.getElementById('formError');
 
   const emptyFields = [...fields].filter(field => !field.value.trim());
 
