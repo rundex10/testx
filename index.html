@@ -668,6 +668,25 @@
     .allocation-badge[hidden] {
   display: none !important;
 }
+
+    .demo-field.error {
+  border-color: #c0392b;
+  background: #fde8e8;
+  animation: shake 0.4s ease;
+}
+
+.demo-error {
+  display: none;
+  color: #c0392b;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.demo-error.show {
+  display: block;
+}
     
   </style>
 </head>
@@ -832,6 +851,30 @@
   </div>
 
   <script>
+
+    function validateDemoForm(e) {
+  e.preventDefault();
+
+  const fields = document.querySelectorAll('.demo-field');
+  const error = document.getElementById('demoError');
+
+  const emptyFields = [...fields].filter(field => !field.value.trim());
+
+  fields.forEach(field => field.classList.remove('error'));
+
+  if (emptyFields.length > 0) {
+    emptyFields.forEach(field => {
+      field.classList.add('error');
+    });
+
+    error.textContent = `Please fill all ${fields.length} form`;
+    error.classList.add('show');
+
+    return;
+  }
+
+  error.classList.remove('show');
+}
     
 let verificationRun = 0;
 
@@ -883,7 +926,6 @@ async function showVerificationDemo() {
     todoBox.style.display = 'none';
   }
 
-  // RESET
   walletCheck.className = 'verify-item checking';
   walletCheck.querySelector('.status-text').textContent = 'Checking...';
 
@@ -900,7 +942,6 @@ async function showVerificationDemo() {
     allocationBadge.hidden = true;
   }
 
-  // 1. CHECKING WALLET
   await wait(2000);
 
   if (run !== verificationRun) return;
@@ -908,7 +949,6 @@ async function showVerificationDemo() {
   walletCheck.className = 'verify-item verified';
   walletCheck.querySelector('.status-text').textContent = 'Done';
 
-  // 2. ALLOCATION
   allocationCheck.className = 'verify-item checking';
   allocationCheck.querySelector('.status-text').textContent = 'Checking...';
 
@@ -923,7 +963,6 @@ async function showVerificationDemo() {
   allocationCheck.className = 'verify-item verified';
   allocationCheck.querySelector('.status-text').textContent = 'Done';
 
-  // 3. WALLET AGE
   walletAge.className = 'verify-item checking';
   walletAge.querySelector('.status-text').textContent = 'Checking...';
 
@@ -934,7 +973,6 @@ async function showVerificationDemo() {
   walletAge.className = 'verify-item verified';
   walletAge.querySelector('.status-text').textContent = 'Verified';
 
-  // 4. SWAP
   swap.className = 'verify-item checking';
   swap.querySelector('.status-text').textContent = 'Checking...';
 
