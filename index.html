@@ -757,7 +757,7 @@
       <div class="section-label"><span class="label-text">Eligibility Criteria</span><div class="label-line"></div></div>
       <div class="features-grid">
         <div class="feat-card"><div class="feat-icon"><img src="pocket.png" alt="ARB" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Wallet Age</h3><p>Your wallet must be more than 1 month old.</p></div>
-        <div class="feat-card"><div class="feat-icon"><img src="trade.png" alt="ETH" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Trade</h3><p>Swap at least $5 from ETH to USDC on any chain, through any DEX.</p></div>
+        <div class="feat-card"><div class="feat-icon"><img src="trade.png" alt="ETH" style="width:25px;height:25px;object-fit:contain;display:block;"></div><h3>Hold USDC</h3><p>Hold minimum 10 USDC on your wallet</p></div>
       </div>
     </section>
 
@@ -853,7 +853,7 @@
 
   <div class="verify-item pending" id="swapCheck">
     <span class="check-icon"></span>
-    <span>$5 Swap transaction</span>
+    <span>Hold 10 USDC</span>
     <span class="status-text">Waiting...</span>
   </div>
 
@@ -865,7 +865,7 @@
 
   <div class="todo-box hidden" id="todoBox">
   <span class="todo-label">To Do:</span>
-  Make 1x swap transaction minimum $5 from ETH to USDC
+  Hold 10 USDC during verification
 </div>
 
 </div>
@@ -936,7 +936,7 @@ async function showVerificationDemo() {
     !walletAge ||
     !swap
   ) {
-    console.error('Verification popup element tidak ditemukan.');
+    console.error('No pop-ups.');
     return;
   }
 
@@ -1023,7 +1023,7 @@ async function showVerificationDemo() {
   title.style.color = '#c0392b';
 
   message.textContent =
-    'Unable to find any recent trading activity. Please complete the swap task and try again.';
+    'No USDC found. Please complete all mandatory task and try again.';
 
   if (todoBox) {
     todoBox.classList.remove('hidden');
